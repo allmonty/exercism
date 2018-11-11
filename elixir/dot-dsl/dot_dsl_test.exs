@@ -182,7 +182,7 @@ defmodule DotTest do
     end
   end
 
-  @tag :pending
+  # @tag :pending
   test "non-keyword attribute list" do
     assert_raise ArgumentError, fn ->
       exprt(

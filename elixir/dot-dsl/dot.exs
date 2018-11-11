@@ -56,7 +56,10 @@ defmodule Dot do
   end
 
   defp process(%Graph{} = graph, {node, _, [opts]}) do
-    %Graph{graph | nodes: [{node, opts} | graph.nodes]}
+    case Keyword.keyword?(opts) do
+      true -> %Graph{graph | nodes: [{node, opts} | graph.nodes]}
+      false -> raise ArgumentError
+    end
   end
 
   defp process(_, _) do
