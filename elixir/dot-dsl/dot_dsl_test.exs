@@ -92,7 +92,7 @@ defmodule DotTest do
              )
   end
 
-  @tag :pending
+  # @tag :pending
   test "keywords stuck to graph without space" do
     assert_raise ArgumentError, fn ->
       exprt(

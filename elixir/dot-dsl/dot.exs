@@ -20,6 +20,10 @@ defmodule Dot do
     end
   end
 
+  defp process(%Graph{} = graph, {{:., _, _}, _, _}) do
+    raise ArgumentError
+  end
+
   defp process(%Graph{} = graph, {:__block__, _, []}) do
     graph
   end
