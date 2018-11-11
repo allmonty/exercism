@@ -114,7 +114,7 @@ defmodule DotTest do
     end
   end
 
-  @tag :pending
+  # @tag :pending
   test "keywords stuck to edge without space" do
     assert_raise ArgumentError, fn ->
       exprt(

@@ -39,6 +39,10 @@ defmodule Dot do
     %Graph{graph | attrs: opts ++ graph.attrs}
   end
 
+  defp process(%Graph{} = graph, {:--, _, [_, {{:., _, _}, _, _}]}) do
+    raise ArgumentError
+  end
+
   defp process(%Graph{} = graph, {:--, _, [{node_a, _, _}, {node_b, _, [opts]}]}) do
     %Graph{graph | edges: [{node_a, node_b, opts} | graph.edges]}
   end
