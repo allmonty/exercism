@@ -47,6 +47,10 @@ defmodule Dot do
     %Graph{graph | edges: [{node_a, node_b, []} | graph.edges]}
   end
 
+  defp process(%Graph{}, {_, _, [{{:., _, _}, _, _}]}) do
+    raise ArgumentError
+  end
+
   defp process(%Graph{} = graph, {node, _, nil}) do
     %Graph{graph | nodes: [{node, []} | graph.nodes]}
   end

@@ -170,7 +170,7 @@ defmodule DotTest do
     end
   end
 
-  @tag :pending
+  # @tag :pending
   test "two attribute lists" do
     assert_raise ArgumentError, fn ->
       exprt(
