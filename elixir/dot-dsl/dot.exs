@@ -12,6 +12,14 @@ defmodule Graph do
   def add_attr(%Graph{attrs: attrs} = graph, attr) do
     %Graph{graph | attrs: attr ++ attrs}
   end
+
+  def sort(%Graph{} = graph) do
+    %Graph{
+      attrs: Enum.sort(graph.attrs),
+      nodes: Enum.sort(graph.nodes),
+      edges: Enum.sort(graph.edges)
+    }
+  end
 end
 
 defmodule Dot do
@@ -19,6 +27,7 @@ defmodule Dot do
     result =
       %Graph{}
       |> process(code_block)
+      |> Graph.sort()
       |> Macro.escape()
 
     quote do: unquote(result)
