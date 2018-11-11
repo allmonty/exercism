@@ -11,8 +11,8 @@ defmodule Dot do
     IO.inspect(code_block, label: "\ncode_block")
 
     result =
-      code_block
-      |> process()
+      %Graph{}
+      |> process(code_block)
       |> Macro.escape()
 
     quote do
@@ -20,12 +20,34 @@ defmodule Dot do
     end
   end
 
-  defp process({:__block__, _, []}), do: %Graph{}
-  defp process({:graph, _, [opts]}), do: %Graph{attrs: opts}
+  defp process(%Graph{} = graph, {:__block__, _, []}) do
+    graph
+  end
 
-  defp process({:--, _, [{node_a, _, _}, {node_b, _, _}]}),
-    do: %Graph{edges: [{node_a, node_b, []}]}
+  defp process(%Graph{} = graph, {:__block__, _, commands}) do
+    commands
+    |> Enum.reduce(graph, fn command, graph ->
+      process(graph, command)
+    end)
+  end
 
-  defp process({node, _, nil}), do: %Graph{nodes: [{node, []}]}
-  defp process({node, _, [opts]}), do: %Graph{nodes: [{node, opts}]}
+  defp process(%Graph{} = graph, {:graph, _, [opts]}) do
+    %Graph{graph | attrs: opts ++ graph.attrs}
+  end
+
+  defp process(%Graph{} = graph, {:--, _, [{node_a, _, _}, {node_b, _, [opts]}]}) do
+    %Graph{graph | edges: [{node_a, node_b, opts} | graph.edges]}
+  end
+
+  defp process(%Graph{} = graph, {:--, _, [{node_a, _, _}, {node_b, _, _}]}) do
+    %Graph{graph | edges: [{node_a, node_b, []} | graph.edges]}
+  end
+
+  defp process(%Graph{} = graph, {node, _, nil}) do
+    %Graph{graph | nodes: [{node, []} | graph.nodes]}
+  end
+
+  defp process(%Graph{} = graph, {node, _, [opts]}) do
+    %Graph{graph | nodes: [{node, opts} | graph.nodes]}
+  end
 end
