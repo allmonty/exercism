@@ -21,6 +21,7 @@ defmodule Dot do
   end
 
   defp process({:__block__, _, []}), do: %Graph{}
+  defp process({:graph, _, [opts]}), do: %Graph{attrs: opts}
 
   defp process({:--, _, [{node_a, _, _}, {node_b, _, _}]}),
     do: %Graph{edges: [{node_a, node_b, []}]}
