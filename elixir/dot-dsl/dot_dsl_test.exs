@@ -125,7 +125,7 @@ defmodule DotTest do
     end
   end
 
-  @tag :pending
+  # @tag :pending
   test "invalid statement: int" do
     assert_raise ArgumentError, fn ->
       exprt(

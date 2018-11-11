@@ -20,10 +20,6 @@ defmodule Dot do
     end
   end
 
-  defp process(%Graph{} = graph, {{:., _, _}, _, _}) do
-    raise ArgumentError
-  end
-
   defp process(%Graph{} = graph, {:__block__, _, []}) do
     graph
   end
@@ -57,5 +53,9 @@ defmodule Dot do
 
   defp process(%Graph{} = graph, {node, _, [opts]}) do
     %Graph{graph | nodes: [{node, opts} | graph.nodes]}
+  end
+
+  defp process(_, _) do
+    raise ArgumentError
   end
 end
