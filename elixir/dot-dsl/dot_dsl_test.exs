@@ -159,7 +159,7 @@ defmodule DotTest do
     end
   end
 
-  @tag :pending
+  # @tag :pending
   test "invalid statement: graph with no keywords" do
     assert_raise ArgumentError, fn ->
       exprt(
