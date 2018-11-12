@@ -15,7 +15,9 @@ defmodule Bob do
     |> String.match?(~r/^[^a-z]+$/u)
   end
 
-  def question?(input), do: String.match?(input, ~r/[?]$/)
-  def yelling_question?(input), do: all_uppercase?(input) and question?(input)
+  def question?(input), do: input =~ ~r/[?]$/
+
   def nothing?(input), do: String.trim_leading(input) == ""
+
+  def yelling_question?(input), do: all_uppercase?(input) and question?(input)
 end
