@@ -32,7 +32,7 @@ defmodule BobTest do
     assert Bob.hey("This Isn't Shouting!") == "Whatever."
   end
 
-  @tag :pending
+  # @tag :pending
   test "asking in capitals" do
     assert Bob.hey("THIS ISN'T SHOUTING?") == "Calm down, I know what I'm doing!"
   end
