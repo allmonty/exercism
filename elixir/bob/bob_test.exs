@@ -72,7 +72,7 @@ defmodule BobTest do
     assert Bob.hey("1, 2, 3") == "Whatever."
   end
 
-  @tag :pending
+  # @tag :pending
   test "question with numbers" do
     assert Bob.hey("4?") == "Sure."
   end
