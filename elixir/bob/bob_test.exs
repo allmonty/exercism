@@ -17,7 +17,7 @@ defmodule BobTest do
     assert Bob.hey("WATCH OUT!") == "Whoa, chill out!"
   end
 
-  @tag :pending
+  # @tag :pending
   test "asking a question" do
     assert Bob.hey("Does this cryogenic chamber make me look fat?") == "Sure."
   end
