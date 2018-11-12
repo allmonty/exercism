@@ -3,14 +3,16 @@ defmodule Bob do
     cond do
       nothing?(input) -> "Fine. Be that way!"
       yelling_question?(input) -> "Calm down, I know what I'm doing!"
-      all_uppercase?(input) -> "Whoa, chill out!"
       question?(input) -> "Sure."
+      all_uppercase?(input) -> "Whoa, chill out!"
       true -> "Whatever."
     end
   end
 
   def all_uppercase?(input) do
-    String.match?(input, ~r/^[^a-z]*$/) and String.match?(input, ~r/[A-Z]+/)
+    input
+    |> String.replace(~r/[\d,? ]/, "")
+    |> String.match?(~r/^[^a-z]+$/u)
   end
 
   def question?(input), do: String.match?(input, ~r/[?]$/)
