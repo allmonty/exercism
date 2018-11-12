@@ -37,17 +37,17 @@ defmodule BobTest do
     assert Bob.hey("THIS ISN'T SHOUTING?") == "Calm down, I know what I'm doing!"
   end
 
-  @tag :pending
+  # @tag :pending
   test "shouting numbers" do
     assert Bob.hey("1, 2, 3 GO!") == "Whoa, chill out!"
   end
 
-  @tag :pending
+  # @tag :pending
   test "shouting with special characters" do
     assert Bob.hey("ZOMG THE %^*@#$(*^ ZOMBIES ARE COMING!!11!!1!") == "Whoa, chill out!"
   end
 
-  @tag :pending
+  # @tag :pending
   test "shouting with no exclamation mark" do
     assert Bob.hey("I HATE YOU") == "Whoa, chill out!"
   end
