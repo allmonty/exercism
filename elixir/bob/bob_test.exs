@@ -52,7 +52,7 @@ defmodule BobTest do
     assert Bob.hey("I HATE YOU") == "Whoa, chill out!"
   end
 
-  @tag :pending
+  # @tag :pending
   test "statement containing question mark" do
     assert Bob.hey("Ending with ? means a question.") == "Whatever."
   end

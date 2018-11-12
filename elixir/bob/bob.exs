@@ -9,6 +9,6 @@ defmodule Bob do
   end
 
   def all_uppercase?(input), do: String.match?(input, ~r/^[^a-z]*$/)
-  def question?(input), do: String.match?(input, ~r/[?]/)
+  def question?(input), do: String.match?(input, ~r/[?]$/)
   def yelling_question?(input), do: all_uppercase?(input) and question?(input)
 end
