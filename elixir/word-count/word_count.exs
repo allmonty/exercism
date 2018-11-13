@@ -10,6 +10,8 @@ defmodule Words do
     |> String.replace(~r/[^a-ẑ\s\d-_]/i, "")
     |> String.downcase()
     |> String.split(~r/[\s_]+/)
-    |> Enum.reduce(%{}, fn x, acc -> Map.update(acc, x, 1, &(&1 + 1)) end)
+    |> Enum.reduce(%{}, &increment_into_map/2)
   end
+
+  defp increment_into_map(item, map), do: Map.update(map, item, 1, &(&1 + 1))
 end
