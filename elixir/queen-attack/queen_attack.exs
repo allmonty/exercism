@@ -40,5 +40,6 @@ defmodule Queens do
   def can_attack?(queens), do: do_can_attack?(queens.black, queens.white)
 
   defp do_can_attack?({xc, _}, {yc, _}) when xc == yc, do: true
+  defp do_can_attack?({_, xl}, {_, yl}) when xl == yl, do: true
   defp do_can_attack?(_, _), do: false
 end
