@@ -38,5 +38,6 @@ defmodule Queens do
   """
   @spec can_attack?(Queens.t()) :: boolean
   def can_attack?(queens) do
+    false
   end
 end

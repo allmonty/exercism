@@ -124,7 +124,7 @@ defmodule QueenAttackTest do
     assert Queens.to_string(queens) == board
   end
 
-  @tag :pending
+  # @tag :pending
   test "cannot attack" do
     queens = Queens.new({2, 3}, {4, 7})
     refute Queens.can_attack?(queens)
