@@ -41,5 +41,5 @@ defmodule Queens do
 
   defp do_can_attack?({xc, _}, {yc, _}) when xc == yc, do: true
   defp do_can_attack?({_, xl}, {_, yl}) when xl == yl, do: true
-  defp do_can_attack?(_, _), do: false
+  defp do_can_attack?({xc, xl}, {yc, yl}), do: abs(xc - yc) == abs(xl - yl)
 end
