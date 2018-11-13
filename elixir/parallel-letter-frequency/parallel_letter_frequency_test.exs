@@ -84,7 +84,7 @@ defmodule FrequencyTest do
     assert freq([@ode_an_die_freude])[","] == nil
   end
 
-  @tag :pending
+  # @tag :pending
   test "numbers don't count" do
     assert freq(["Testing, 1, 2, 3"])["1"] == nil
   end
