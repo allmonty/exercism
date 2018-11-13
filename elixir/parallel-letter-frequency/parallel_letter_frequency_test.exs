@@ -69,7 +69,7 @@ defmodule FrequencyTest do
     assert freq(["aA"]) == %{"a" => 2}
   end
 
-  @tag :pending
+  # @tag :pending
   test "many empty texts still mean no letters" do
     assert freq(List.duplicate("  ", 10000)) == %{}
   end
