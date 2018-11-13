@@ -42,7 +42,7 @@ defmodule WordsTest do
     assert Words.count("co-operative") == expected
   end
 
-  @tag :pending
+  # @tag :pending
   test "ignore underscores" do
     expected = %{"two" => 1, "words" => 1}
     assert Words.count("two_words") == expected
