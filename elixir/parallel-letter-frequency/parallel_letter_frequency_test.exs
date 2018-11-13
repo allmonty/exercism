@@ -79,7 +79,7 @@ defmodule FrequencyTest do
     assert freq(List.duplicate("abc", 1000)) == %{"a" => 1000, "b" => 1000, "c" => 1000}
   end
 
-  @tag :pending
+  # @tag :pending
   test "punctuation doesn't count" do
     assert freq([@ode_an_die_freude])[","] == nil
   end
