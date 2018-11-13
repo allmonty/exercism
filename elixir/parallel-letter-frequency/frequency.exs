@@ -19,7 +19,7 @@ defmodule Frequency do
 
   defp calculate_frequency(text) do
     text
-    |> String.replace(~r/[^a-zA-Z]/, "")
+    |> String.replace(~r/[^a-ẑ]/i, "")
     |> String.downcase()
     |> String.graphemes()
     |> Enum.reduce(%{}, fn x, acc -> Map.update(acc, x, 1, &(&1 + 1)) end)
