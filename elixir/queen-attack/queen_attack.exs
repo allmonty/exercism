@@ -17,18 +17,9 @@ defmodule Queens do
   """
   @spec to_string(Queens.t()) :: String.t()
   def to_string(queens) do
-    for c <- 0..7, l <- 0..7 do
-      cond do
-        {c, l} == queens.white -> "W"
-        {c, l} == queens.black -> "B"
-        true -> "_"
-      end <>
-        cond do
-          {c, l} == {7, 7} -> ""
-          l == 7 and c != 7 -> "\n"
-          true -> " "
-        end
-    end
+    0..7
+    |> Enum.flat_map(fn l -> Enum.map(0..7, fn c -> {l, c} end) end)
+    |> Enum.map(fn x -> calculate_piece(x, queens) <> suffix(x) end)
     |> Enum.join()
     |> String.trim_trailing(" ")
   end
@@ -42,4 +33,20 @@ defmodule Queens do
   defp do_can_attack?({xc, _}, {yc, _}) when xc == yc, do: true
   defp do_can_attack?({_, xl}, {_, yl}) when xl == yl, do: true
   defp do_can_attack?({xc, xl}, {yc, yl}), do: abs(xc - yc) == abs(xl - yl)
+
+  defp calculate_piece({c, l}, queens) do
+    cond do
+      {c, l} == queens.white -> "W"
+      {c, l} == queens.black -> "B"
+      true -> "_"
+    end
+  end
+
+  defp suffix({c, l}) do
+    cond do
+      {c, l} == {7, 7} -> ""
+      l == 7 and c != 7 -> "\n"
+      true -> " "
+    end
+  end
 end
