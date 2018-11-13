@@ -59,7 +59,7 @@ defmodule FrequencyTest do
     assert freq([]) == %{}
   end
 
-  @tag :pending
+  # @tag :pending
   test "one letter" do
     assert freq(["a"]) == %{"a" => 1}
   end
