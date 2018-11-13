@@ -15,7 +15,7 @@ defmodule QueenAttackTest do
     assert queens.black == {7, 3}
   end
 
-  @tag :pending
+  # @tag :pending
   test "specific placement" do
     queens = Queens.new({3, 7}, {6, 1})
     assert queens.white == {3, 7}
