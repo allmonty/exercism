@@ -19,12 +19,15 @@ defmodule Queens do
   def to_string(queens) do
     for c <- 0..7, l <- 0..7 do
       cond do
-        {c, l} == queens.white -> "W "
-        {c, l} == queens.black -> "B "
-        {c, l} == {7, 7} -> "_"
-        l == 7 and c != 7 -> "_\n"
-        true -> "_ "
-      end
+        {c, l} == queens.white -> "W"
+        {c, l} == queens.black -> "B"
+        true -> "_"
+      end <>
+        cond do
+          {c, l} == {7, 7} -> ""
+          l == 7 and c != 7 -> "\n"
+          true -> " "
+        end
     end
     |> Enum.join()
     |> String.trim_trailing(" ")

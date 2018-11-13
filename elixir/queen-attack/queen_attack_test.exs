@@ -105,7 +105,7 @@ defmodule QueenAttackTest do
     assert Queens.to_string(queens) == board
   end
 
-  @tag :pending
+  # @tag :pending
   test "queen placed on the edge of the board" do
     queens = Queens.new({4, 3}, {2, 7})
 
