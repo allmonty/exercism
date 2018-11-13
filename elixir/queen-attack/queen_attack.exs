@@ -7,6 +7,8 @@ defmodule Queens do
   """
   @spec new() :: Queens.t()
   @spec new({integer, integer}, {integer, integer}) :: Queens.t()
+  def new(), do: %{white: {0, 3}, black: {7, 3}}
+
   def new(white, black) do
   end
 
