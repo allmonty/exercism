@@ -130,7 +130,7 @@ defmodule QueenAttackTest do
     refute Queens.can_attack?(queens)
   end
 
-  @tag :pending
+  # @tag :pending
   test "can attack on same row" do
     queens = Queens.new({2, 4}, {2, 7})
     assert Queens.can_attack?(queens)
