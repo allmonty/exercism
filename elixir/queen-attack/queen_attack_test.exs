@@ -22,7 +22,7 @@ defmodule QueenAttackTest do
     assert queens.black == {6, 1}
   end
 
-  @tag :pending
+  # @tag :pending
   test "cannot occupy same space" do
     assert_raise ArgumentError, fn ->
       Queens.new({2, 4}, {2, 4})
