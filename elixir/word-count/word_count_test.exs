@@ -48,7 +48,7 @@ defmodule WordsTest do
     assert Words.count("two_words") == expected
   end
 
-  @tag :pending
+  # @tag :pending
   test "normalize case" do
     expected = %{"go" => 3}
     assert Words.count("go Go GO") == expected
