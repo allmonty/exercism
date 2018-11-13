@@ -17,6 +17,16 @@ defmodule Queens do
   """
   @spec to_string(Queens.t()) :: String.t()
   def to_string(queens) do
+    for c <- 0..7, l <- 0..7 do
+      cond do
+        {c, l} == queens.white -> "W "
+        {c, l} == queens.black -> "B "
+        l == 7 -> "_\n"
+        true -> "_ "
+      end
+    end
+    |> Enum.join()
+    |> String.trim_trailing("\n")
   end
 
   @doc """

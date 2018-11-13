@@ -29,7 +29,7 @@ defmodule QueenAttackTest do
     end
   end
 
-  @tag :pending
+  # @tag :pending
   test "string representation" do
     queens = Queens.new({2, 4}, {6, 6})
 
