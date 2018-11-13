@@ -11,6 +11,7 @@ defmodule Frequency do
 
   def frequency([text], _workers) do
     text
+    |> String.downcase()
     |> String.graphemes()
     |> Enum.reduce(%{}, fn x, acc -> Map.update(acc, x, 1, &(&1 + 1)) end)
   end

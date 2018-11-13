@@ -64,7 +64,7 @@ defmodule FrequencyTest do
     assert freq(["a"]) == %{"a" => 1}
   end
 
-  @tag :pending
+  # @tag :pending
   test "case insensitivity" do
     assert freq(["aA"]) == %{"a" => 2}
   end
