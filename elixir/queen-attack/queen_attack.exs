@@ -21,12 +21,13 @@ defmodule Queens do
       cond do
         {c, l} == queens.white -> "W "
         {c, l} == queens.black -> "B "
-        l == 7 -> "_\n"
+        {c, l} == {7, 7} -> "_"
+        l == 7 and c != 7 -> "_\n"
         true -> "_ "
       end
     end
     |> Enum.join()
-    |> String.trim_trailing("\n")
+    |> String.trim_trailing(" ")
   end
 
   @doc """
