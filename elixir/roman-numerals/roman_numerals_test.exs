@@ -13,22 +13,22 @@ defmodule RomanTest do
     assert Roman.numerals(1) == "I"
   end
 
-  @tag :pending
+  # @tag :pending
   test "2" do
     assert Roman.numerals(2) == "II"
   end
 
-  @tag :pending
+  # @tag :pending
   test "3" do
     assert Roman.numerals(3) == "III"
   end
 
-  @tag :pending
+  # @tag :pending
   test "4" do
     assert Roman.numerals(4) == "IV"
   end
 
-  @tag :pending
+  # @tag :pending
   test "5" do
     assert Roman.numerals(5) == "V"
   end
