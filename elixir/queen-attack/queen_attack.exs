@@ -30,22 +30,22 @@ defmodule Queens do
   @spec can_attack?(Queens.t()) :: boolean
   def can_attack?(queens), do: do_can_attack?(queens.black, queens.white)
 
-  defp do_can_attack?({xc, _}, {yc, _}) when xc == yc, do: true
-  defp do_can_attack?({_, xl}, {_, yl}) when xl == yl, do: true
-  defp do_can_attack?({xc, xl}, {yc, yl}), do: abs(xc - yc) == abs(xl - yl)
+  defp do_can_attack?({xcol, _}, {ycol, _}) when xcol == ycol, do: true
+  defp do_can_attack?({_, xrow}, {_, yrow}) when xrow == yrow, do: true
+  defp do_can_attack?({xcol, xrow}, {ycol, yrow}), do: abs(xcol - ycol) == abs(xrow - yrow)
 
-  defp calculate_piece({c, l}, queens) do
+  defp calculate_piece({col, row}, queens) do
     cond do
-      {c, l} == queens.white -> "W"
-      {c, l} == queens.black -> "B"
+      {col, row} == queens.white -> "W"
+      {col, row} == queens.black -> "B"
       true -> "_"
     end
   end
 
-  defp suffix({c, l}) do
+  defp suffix({col, row}) do
     cond do
-      {c, l} == {7, 7} -> ""
-      l == 7 and c != 7 -> "\n"
+      {col, row} == {7, 7} -> ""
+      row == 7 and col != 7 -> "\n"
       true -> " "
     end
   end
