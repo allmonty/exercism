@@ -21,7 +21,6 @@ defmodule Queens do
     |> Enum.flat_map(fn l -> Enum.map(0..7, fn c -> {l, c} end) end)
     |> Enum.map(fn x -> calculate_piece(x, queens) <> suffix(x) end)
     |> Enum.join()
-    |> String.trim_trailing(" ")
   end
 
   @doc """
