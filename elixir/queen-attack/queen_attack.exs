@@ -30,9 +30,9 @@ defmodule Queens do
   @spec can_attack?(Queens.t()) :: boolean
   def can_attack?(queens), do: do_can_attack?(queens.black, queens.white)
 
-  defp do_can_attack?({xcol, _}, {ycol, _}) when xcol == ycol, do: true
-  defp do_can_attack?({_, xrow}, {_, yrow}) when xrow == yrow, do: true
-  defp do_can_attack?({xcol, xrow}, {ycol, yrow}), do: abs(xcol - ycol) == abs(xrow - yrow)
+  defp do_can_attack?({w_c, _}, {b_c, _}) when w_c == b_c, do: true
+  defp do_can_attack?({_, w_r}, {_, b_r}) when w_r == b_r, do: true
+  defp do_can_attack?({w_c, w_r}, {b_c, b_r}), do: abs(w_c - b_c) == abs(w_r - b_r)
 
   defp calculate_piece({col, row}, queens) do
     cond do
