@@ -3,29 +3,30 @@ defmodule Roman do
   Convert the number to a roman number.
   """
   @spec numerals(pos_integer) :: String.t()
-  def numerals(number) do
-    calc(number, 5)
+  def numerals(number), do: calc(number)
+
+  @numerals [
+    {1000, "M"},
+    {900, "CM"},
+    {500, "D"},
+    {400, "CD"},
+    {100, "C"},
+    {90, "XC"},
+    {50, "L"},
+    {40, "XL"},
+    {10, "X"},
+    {9, "IX"},
+    {5, "V"},
+    {4, "IV"},
+    {1, "I"}
+  ]
+
+  defp calc(number) do
+    @numerals
+    |> Enum.reduce({number, ""}, fn {key, numeral}, {remnant, acc} ->
+      times = Integer.floor_div(remnant, key)
+      {remnant - key * times, acc <> String.duplicate(numeral, times)}
+    end)
+    |> elem(1)
   end
-
-  defp calc(0, _), do: ""
-
-  defp calc(number, base) do
-    base_minus_one = base - 1
-
-    case rem(number, base) do
-      0 -> "V"
-      ^base_minus_one -> "IV"
-      _ -> "I" <> calc(number - 1, base)
-    end
-  end
-
-  @numerals %{
-    1 => "I",
-    5 => "V",
-    10 => "X",
-    50 => "L",
-    100 => "C",
-    500 => "D",
-    1000 => "M"
-  }
 end
