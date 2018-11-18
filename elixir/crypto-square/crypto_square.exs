@@ -8,32 +8,17 @@ defmodule CryptoSquare do
   """
   @spec encode(String.t()) :: String.t()
   def encode(""), do: ""
+  def encode(str), do: str |> normalize() |> crypto()
 
-  def encode(str) do
+  defp crypto(str) do
+    c = str |> String.length() |> :math.sqrt() |> Float.ceil() |> round()
+
     str
-    |> normalize()
-    |> crypto()
+    |> String.graphemes()
+    |> Enum.chunk_every(c, c, Stream.cycle([""]))
+    |> Enum.zip()
+    |> Enum.map_join(" ", &Tuple.to_list(&1))
   end
 
   defp normalize(str), do: str |> String.downcase() |> String.replace(~r/[^a-ẑ\d]/i, "")
-
-  defp crypto(str) do
-    {c, r} = calc_c_r(str)
-
-    str
-    |> String.pad_trailing(c * r)
-    |> String.graphemes()
-    |> Enum.chunk_every(c)
-    |> Enum.zip()
-    |> Enum.map_join(" ", fn x ->
-      x |> Tuple.to_list() |> Enum.join() |> String.trim()
-    end)
-  end
-
-  defp calc_c_r(str) do
-    side = str |> String.length() |> :math.sqrt()
-    c = side |> Float.ceil() |> round()
-    r = side |> Float.floor() |> round()
-    {c, r}
-  end
 end
