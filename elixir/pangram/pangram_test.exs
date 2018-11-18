@@ -13,22 +13,22 @@ defmodule PangramTest do
     refute Pangram.pangram?("")
   end
 
-  @tag :pending
+  # @tag :pending
   test "pangram with only lower case" do
     assert Pangram.pangram?("the quick brown fox jumps over the lazy dog")
   end
 
-  @tag :pending
+  # @tag :pending
   test "missing character 'x'" do
     refute Pangram.pangram?("a quick movement of the enemy will jeopardize five gunboats")
   end
 
-  @tag :pending
+  # @tag :pending
   test "another missing character 'x'" do
     refute Pangram.pangram?("the quick brown fish jumps over the lazy dog")
   end
 
-  @tag :pending
+  # @tag :pending
   test "pangram with underscores" do
     assert Pangram.pangram?("the_quick_brown_fox_jumps_over_the_lazy_dog")
   end
