@@ -8,5 +8,9 @@ defmodule CryptoSquare do
   """
   @spec encode(String.t()) :: String.t()
   def encode(str) do
+    str
+    |> normalize()
   end
+
+  defp normalize(str), do: str |> String.downcase() |> String.replace(~r/[^a-ẑ]/i, "")
 end
