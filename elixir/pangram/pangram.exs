@@ -11,24 +11,23 @@ defmodule Pangram do
       true
 
   """
-
   @spec pangram?(String.t()) :: boolean
-  def pangram?(""), do: false
-
   def pangram?(sentence) do
     sentence
     |> normalize()
     |> String.graphemes()
-    |> Enum.reduce(bucket(), fn x, acc -> %{acc | x => acc[x] + 1} end)
+    |> Enum.reduce(bucket(), &count_letters/2)
     |> Enum.any?(fn {_, value} -> value == 0 end)
     |> Kernel.!()
   end
 
-  defp normalize(str), do: str |> String.downcase() |> String.replace(~r/[^a-z]/i, "")
+  defp normalize(str), do: str |> String.replace(~r/[^a-zA-Z]/i, "") |> String.downcase()
+
+  defp count_letters(x, map), do: %{map | x => map[x] + 1}
 
   defp bucket() do
     "abcdefghijklmnopqrstuvwxyz"
     |> String.graphemes()
-    |> Enum.reduce(%{}, fn x, acc -> Map.put(acc, x, 0) end)
+    |> Enum.reduce(%{}, &Map.put(&2, &1, 0))
   end
 end
