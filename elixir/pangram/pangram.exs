@@ -24,7 +24,7 @@ defmodule Pangram do
     |> Kernel.!()
   end
 
-  defp normalize(str), do: str |> String.downcase() |> String.replace(~r/[^a-ẑ\d]/i, "")
+  defp normalize(str), do: str |> String.downcase() |> String.replace(~r/[^a-z]/i, "")
 
   defp bucket() do
     "abcdefghijklmnopqrstuvwxyz"
