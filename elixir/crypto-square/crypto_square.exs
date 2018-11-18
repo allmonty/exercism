@@ -20,5 +20,5 @@ defmodule CryptoSquare do
     |> Enum.map_join(" ", &Tuple.to_list(&1))
   end
 
-  defp normalize(str), do: str |> String.downcase() |> String.replace(~r/[^a-ẑ\d]/i, "")
+  defp normalize(str), do: str |> String.downcase() |> String.replace(~r/[^\p{Ll}\d]/, "")
 end
