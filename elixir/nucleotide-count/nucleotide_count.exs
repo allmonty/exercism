@@ -27,5 +27,6 @@ defmodule NucleotideCount do
   """
   @spec histogram([char]) :: map
   def histogram(strand) do
+    Enum.group_by(strand, &strand, &1)
   end
 end
