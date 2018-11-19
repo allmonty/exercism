@@ -16,9 +16,17 @@ defmodule BeerSong do
   Get the entire beer song for a given range of numbers of bottles.
   """
   @spec lyrics(Range.t()) :: String.t()
+  def lyrics(), do: lyrics(99..0)
+
   def lyrics(range) do
-    # Your implementation here...
+    range
+    |> Enum.reduce("", fn verse_num, text ->
+      text <> verse(verse_num) <> break_line(verse_num, range)
+    end)
   end
+
+  def break_line(current, _..last) when current == last, do: ""
+  def break_line(_, _), do: "\n"
 
   defp qnt_of_bottles(_, _ \\ nil)
   defp qnt_of_bottles(0, :capitalize), do: "No more bottles"
