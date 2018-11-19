@@ -35,7 +35,6 @@ defmodule Poker do
     hands
     |> Enum.map(&Hand.new/1)
     |> highest_card_hand()
-    |> elem(0)
   end
 
   defp highest_card_hand(hands) do
@@ -48,6 +47,8 @@ defmodule Poker do
         true -> {list, current}
       end
     end)
+    |> elem(0)
+    |> Enum.reverse()
   end
 
   defp highest_card(hand), do: Enum.max_by(hand.ranks, fn {key, _} -> key end) |> elem(0)
