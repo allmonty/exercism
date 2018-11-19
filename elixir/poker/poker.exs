@@ -34,24 +34,37 @@ defmodule Poker do
   defp best(hands) do
     hands
     |> Enum.map(&Hand.new/1)
-    |> highest_card_hand()
+    |> IO.inspect()
+    |> highest_cards_hand()
   end
 
-  defp highest_card_hand(hands) do
-    Enum.reduce(hands, {[], 0}, fn hand, {list, current} ->
-      card = highest_card(hand)
+  defp highest_cards_hand(hands) do
+    hands
+    |> Enum.map(&(&1.ranks |> Map.keys() |> Enum.reverse()))
+    |> Enum.zip()
+    |> Enum.map(&Tuple.to_list/1)
+    |> IO.inspect()
+    |> Enum.reduce_while([], fn x, _ ->
+      case IO.inspect(highest_numbers_indexed(x), label: x) do
+        [item] -> {:halt, [item]}
+        _ -> {:cont, []}
+      end
+    end)
+    |> Enum.map(fn {_, i} -> Enum.at(hands, i).hand end)
+  end
 
+  defp highest_numbers_indexed(numbers) do
+    numbers
+    |> Enum.with_index()
+    |> Enum.reduce({[], 0}, fn {x, i}, {list, current} ->
       cond do
-        card > current -> {[hand.hand], card}
-        card == current -> {[hand.hand | list], card}
+        x > current -> {[{x, i}], x}
+        x == current -> {[{x, i} | list], current}
         true -> {list, current}
       end
     end)
     |> elem(0)
-    |> Enum.reverse()
   end
-
-  defp highest_card(hand), do: Enum.max_by(hand.ranks, fn {key, _} -> key end) |> elem(0)
 end
 
 defmodule Hand do
