@@ -4,11 +4,10 @@ defmodule BeerSong do
   """
   @spec verse(integer) :: String.t()
   def verse(number) do
-    current_beers = quantity_of_bottles(number)
-    next_beers = (number - 1) |> Integer.mod(100) |> quantity_of_bottles()
+    next_beers = (number - 1) |> Integer.mod(100) |> qnt_of_bottles()
 
     """
-    #{current_beers} of beer on the wall, #{current_beers} of beer.
+    #{qnt_of_bottles(number, :capitalize)} of beer on the wall, #{qnt_of_bottles(number)} of beer.
     #{do_something(number)}, #{next_beers} of beer on the wall.
     """
   end
@@ -21,9 +20,11 @@ defmodule BeerSong do
     # Your implementation here...
   end
 
-  defp quantity_of_bottles(0), do: "No more bottles"
-  defp quantity_of_bottles(1), do: "1 bottle"
-  defp quantity_of_bottles(n), do: "#{n} bottles"
+  defp qnt_of_bottles(_, _ \\ nil)
+  defp qnt_of_bottles(0, :capitalize), do: "No more bottles"
+  defp qnt_of_bottles(0, _), do: "no more bottles"
+  defp qnt_of_bottles(1, _), do: "1 bottle"
+  defp qnt_of_bottles(n, _), do: "#{n} bottles"
 
   defp do_something(0), do: "Go to the store and buy some more"
   defp do_something(1), do: "Take it down and pass it around"
