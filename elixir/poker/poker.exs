@@ -29,4 +29,51 @@ defmodule Poker do
   """
   @spec best_hand(list(list(String.t()))) :: list(list(String.t()))
   def best_hand([hand]), do: [hand]
+  def best_hand(hands), do: best(hands)
+
+  defp best(hands) do
+    hands
+    |> Enum.map(&Hand.new/1)
+    |> highest_card_hand()
+    |> elem(0)
+  end
+
+  defp highest_card_hand(hands) do
+    Enum.reduce(hands, {[], 0}, fn hand, {list, current} ->
+      card = highest_card(hand)
+
+      cond do
+        card > current -> {[hand.hand], card}
+        card == current -> {[hand.hand | list], card}
+        true -> {list, current}
+      end
+    end)
+  end
+
+  defp highest_card(hand), do: Enum.max_by(hand.ranks, fn {key, _} -> key end) |> elem(0)
+end
+
+defmodule Hand do
+  defstruct ranks: %{}, suits: %{}, hand: []
+
+  def new(list) do
+    list
+    |> Enum.reduce(%Hand{}, fn x, acc ->
+      {rank, suit} = String.split_at(x, String.length(x) - 1)
+      ranks = Map.update(acc.ranks, rank_to_int(rank), 1, &(&1 + 1))
+      suits = Map.update(acc.suits, suit, 1, &(&1 + 1))
+      %{acc | ranks: ranks, suits: suits}
+    end)
+    |> Map.put(:hand, list)
+  end
+
+  defp rank_to_int(rank) do
+    case rank do
+      "K" -> 13
+      "Q" -> 12
+      "J" -> 11
+      "A" -> 1
+      n -> String.to_integer(n)
+    end
+  end
 end

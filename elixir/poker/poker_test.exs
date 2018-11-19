@@ -14,7 +14,7 @@ defmodule PokerTest do
     assert Poker.best_hand([high_of_jack]) == [high_of_jack]
   end
 
-  @tag :pending
+  # @tag :pending
   test "highest card out of all hands wins" do
     high_of_8 = ~w(4D 5S 6S 8D 3C)
     high_of_10 = ~w(2S 4C 7S 9H 10H)
