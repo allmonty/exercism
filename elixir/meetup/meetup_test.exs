@@ -113,72 +113,72 @@ defmodule MeetupTest do
     assert Meetup.meetup(2013, 10, :sunday, :teenth) == {2013, 10, 13}
   end
 
-  @tag :pending
+  # @tag :pending
   test "first monday of march 2013" do
     assert Meetup.meetup(2013, 3, :monday, :first) == {2013, 3, 4}
   end
 
-  @tag :pending
+  # @tag :pending
   test "first monday of april 2013" do
     assert Meetup.meetup(2013, 4, :monday, :first) == {2013, 4, 1}
   end
 
-  @tag :pending
+  # @tag :pending
   test "first tuesday of may 2013" do
     assert Meetup.meetup(2013, 5, :tuesday, :first) == {2013, 5, 7}
   end
 
-  @tag :pending
+  # @tag :pending
   test "first tuesday of june 2013" do
     assert Meetup.meetup(2013, 6, :tuesday, :first) == {2013, 6, 4}
   end
 
-  @tag :pending
+  # @tag :pending
   test "first wednesday of july 2013" do
     assert Meetup.meetup(2013, 7, :wednesday, :first) == {2013, 7, 3}
   end
 
-  @tag :pending
+  # @tag :pending
   test "first wednesday of august 2013" do
     assert Meetup.meetup(2013, 8, :wednesday, :first) == {2013, 8, 7}
   end
 
-  @tag :pending
+  # @tag :pending
   test "first thursday of september 2013" do
     assert Meetup.meetup(2013, 9, :thursday, :first) == {2013, 9, 5}
   end
 
-  @tag :pending
+  # @tag :pending
   test "first thursday of october 2013" do
     assert Meetup.meetup(2013, 10, :thursday, :first) == {2013, 10, 3}
   end
 
-  @tag :pending
+  # @tag :pending
   test "first friday of november 2013" do
     assert Meetup.meetup(2013, 11, :friday, :first) == {2013, 11, 1}
   end
 
-  @tag :pending
+  # @tag :pending
   test "first friday of december 2013" do
     assert Meetup.meetup(2013, 12, :friday, :first) == {2013, 12, 6}
   end
 
-  @tag :pending
+  # @tag :pending
   test "first saturday of january 2013" do
     assert Meetup.meetup(2013, 1, :saturday, :first) == {2013, 1, 5}
   end
 
-  @tag :pending
+  # @tag :pending
   test "first saturday of february 2013" do
     assert Meetup.meetup(2013, 2, :saturday, :first) == {2013, 2, 2}
   end
 
-  @tag :pending
+  # @tag :pending
   test "first sunday of march 2013" do
     assert Meetup.meetup(2013, 3, :sunday, :first) == {2013, 3, 3}
   end
 
-  @tag :pending
+  # @tag :pending
   test "first sunday of april 2013" do
     assert Meetup.meetup(2013, 4, :sunday, :first) == {2013, 4, 7}
   end
