@@ -17,8 +17,7 @@ defmodule BeerSong do
   """
   @spec lyrics :: String.t()
   @spec lyrics(Range.t()) :: String.t()
-  def lyrics, do: lyrics(99..0)
-  def lyrics(range), do: range |> Enum.map(&verse/1) |> Enum.join("\n")
+  def lyrics(range \\ 99..0), do: Enum.map_join(range, "\n", &verse/1)
 
   defp qnt_of_bottles(0), do: "no more bottles"
   defp qnt_of_bottles(1), do: "1 bottle"
