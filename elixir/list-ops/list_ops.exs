@@ -20,8 +20,8 @@ defmodule ListOps do
   def map([h | t], f), do: [f.(h) | map(t, f)]
 
   @spec filter(list, (any -> as_boolean(term))) :: list
-  def filter(l, f) do
-  end
+  def filter([], _f), do: []
+  def filter([h | t], f), do: if(f.(h), do: [h | filter(t, f)], else: filter(t, f))
 
   @type acc :: any
   @spec reduce(list, acc, (any, acc -> acc)) :: acc
