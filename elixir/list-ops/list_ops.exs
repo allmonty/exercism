@@ -16,8 +16,8 @@ defmodule ListOps do
   def do_reverse([h | t], rl), do: do_reverse(t, [h | rl])
 
   @spec map(list, (any -> any)) :: list
-  def map(l, f) do
-  end
+  def map([], _f), do: []
+  def map([h | t], f), do: [f.(h) | map(t, f)]
 
   @spec filter(list, (any -> as_boolean(term))) :: list
   def filter(l, f) do
