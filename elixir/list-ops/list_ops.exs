@@ -11,8 +11,9 @@ defmodule ListOps do
   def count([h | t]), do: 1 + count(t)
 
   @spec reverse(list) :: list
-  def reverse(l) do
-  end
+  def reverse(l), do: do_reverse(l, [])
+  def do_reverse([], rl), do: rl
+  def do_reverse([h | t], rl), do: do_reverse(t, [h | rl])
 
   @spec map(list, (any -> any)) :: list
   def map(l, f) do
