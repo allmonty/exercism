@@ -8,7 +8,7 @@ defmodule ListOps do
 
   @spec count(list) :: non_neg_integer
   def count([]), do: 0
-  def count([h | t]), do: 1 + count(t)
+  def count([_ | t]), do: 1 + count(t)
 
   @spec reverse(list) :: list
   def reverse(l), do: do_reverse(l, [])
@@ -29,11 +29,8 @@ defmodule ListOps do
   def reduce([h | t], acc, f), do: reduce(t, f.(h, acc), f)
 
   @spec append(list, list) :: list
-  def append(a, b), do: do_append(reverse(a), b)
-  defp do_append([], l), do: l
-  defp do_append([h | t], l), do: do_append(t, [h | l])
+  def append(a, b), do: reduce(reverse(a), b, &[&1 | &2])
 
   @spec concat([[any]]) :: [any]
-  def concat(ll) do
-  end
+  def concat(ll), do: reduce(reverse(ll), [], &append(&1, &2))
 end
