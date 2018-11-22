@@ -12,22 +12,22 @@ defmodule LuhnTest do
     refute Luhn.valid?("1")
   end
 
-  @tag :pending
+  # @tag :pending
   test "A single zero is invalid" do
     refute Luhn.valid?("0")
   end
 
-  @tag :pending
+  # @tag :pending
   test "a simple valid SIN that remains valid if reversed" do
     assert Luhn.valid?("059")
   end
 
-  @tag :pending
+  # @tag :pending
   test "a simple valid SIN that becomes invalid if reversed" do
     assert Luhn.valid?("59")
   end
 
-  @tag :pending
+  # @tag :pending
   test "a valid Canadian SIN" do
     assert Luhn.valid?("055 444 285")
   end
