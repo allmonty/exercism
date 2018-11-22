@@ -3,17 +3,25 @@ defmodule Luhn do
   Checks if the given number is valid via the luhn formula
   """
   @spec valid?(String.t()) :: boolean
-  def valid?(number) do
+  def valid?(n) do
+    n = n |> String.replace(" ", "")
+
+    only_digits?(n) && !zero?(n) && luhn?(n)
+  end
+
+  defp only_digits?(n), do: !String.match?(n, ~r/[^\d]/)
+
+  defp zero?(n), do: n == "0"
+
+  defp divisible_by_10?(number), do: rem(number, 10) == 0
+
+  defp luhn?(number) do
     number
-    |> String.replace(" ", "")
     |> String.graphemes()
     |> Enum.map(&String.to_integer/1)
     |> double_every_second_from_right()
     |> divisible_by_10?()
   end
-
-  defp divisible_by_10?(0), do: false
-  defp divisible_by_10?(number), do: rem(number, 10) == 0
 
   defp double_every_second_from_right(number_list) do
     number_list
