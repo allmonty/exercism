@@ -21,36 +21,19 @@ defmodule Markdown do
 
   defp process(t) do
     cond do
-      header?(t) -> t |> parse_header_md_level() |> enclose_with_header_tag()
-      list?(t) -> t |> parse_list_md_level()
-      true -> t |> String.split() |> enclose_with_paragraph_tag()
+      header?(t) -> t |> process_header()
+      list?(t) -> t |> process_list()
+      true -> t |> process_words() |> paragraph()
     end
   end
 
-  defp parse_header_md_level(hwt) do
-    [header_mark | text] = String.split(hwt)
+  defp process_header(t, level \\ 1)
+  defp process_header("# " <> t, level), do: header(t, level)
+  defp process_header("#" <> t, level), do: process_header(t, level + 1)
 
-    qty_of_hash_marks = header_mark |> String.length()
-    text = text |> Enum.join(" ")
+  defp process_list("* " <> t), do: t |> process_words() |> list_item()
 
-    {qty_of_hash_marks, text}
-  end
-
-  defp parse_list_md_level(l) do
-    l
-    |> String.trim_leading("* ")
-    |> String.split()
-    |> join_words_with_tags()
-    |> list_item()
-  end
-
-  defp enclose_with_header_tag({header_level, text}) do
-    "<h#{header_level}>" <> text <> "</h#{header_level}>"
-  end
-
-  defp enclose_with_paragraph_tag(t) do
-    t |> join_words_with_tags() |> paragraph()
-  end
+  defp process_words(t), do: t |> String.split() |> join_words_with_tags()
 
   defp join_words_with_tags(t) do
     t
@@ -80,21 +63,16 @@ defmodule Markdown do
 
   defp patch(l) do
     l
-    |> String.replace("<li>", "<ul>" <> "<li>", global: false)
-    |> String.replace_suffix("</li>", "</li>" <> "</ul>")
+    |> String.replace("<li>", "<ul><li>", global: false)
+    |> String.replace_suffix("</li>", "</li></ul>")
   end
 
-  defp header?(t), do: String.starts_with?(t, "#")
+  defp header?(t), do: t =~ ~r/^#+\s/
+  defp list?(t), do: String.starts_with?(t, "* ")
 
-  defp list?(t), do: String.starts_with?(t, "*")
-
-  defp bold?(t), do: t =~ ~r/#{"__"}{1}$/
-
-  defp italic?(t), do: t =~ ~r/[^#{"_"}{1}]/
-
-  defp split_per_line(t), do: String.split(t, "\n")
-
+  defp header(t, level), do: "<h#{level}>#{t}</h#{level}>"
+  defp list_item(t), do: "<li>#{t}</li>"
   defp paragraph(t), do: "<p>#{t}</p>"
 
-  defp list_item(t), do: "<li>#{t}</li>"
+  defp split_per_line(t), do: String.split(t, "\n")
 end
