@@ -21,9 +21,9 @@ defmodule Markdown do
 
   defp process(t) do
     cond do
-      String.starts_with?(t, "#") -> enclose_with_header_tag(parse_header_md_level(t))
-      String.starts_with?(t, "*") -> parse_list_md_level(t)
-      true -> enclose_with_paragraph_tag(String.split(t))
+      header?(t) -> t |> parse_header_md_level() |> enclose_with_header_tag()
+      list?(t) -> t |> parse_list_md_level()
+      true -> t |> String.split() |> enclose_with_paragraph_tag()
     end
   end
 
@@ -33,24 +33,29 @@ defmodule Markdown do
   end
 
   defp parse_list_md_level(l) do
-    t = String.split(String.trim_leading(l, "* "))
-    "<li>" <> join_words_with_tags(t) <> "</li>"
+    l
+    |> String.trim_leading("* ")
+    |> String.split()
+    |> join_words_with_tags()
+    |> list_item()
   end
 
   defp enclose_with_header_tag({hl, htl}) do
-    "<h" <> hl <> ">" <> htl <> "</h" <> hl <> ">"
+    "<h#{hl}>" <> htl <> "</h#{hl}>"
   end
 
   defp enclose_with_paragraph_tag(t) do
-    "<p>#{join_words_with_tags(t)}</p>"
+    t |> join_words_with_tags() |> paragraph()
   end
 
   defp join_words_with_tags(t) do
-    Enum.join(Enum.map(t, fn w -> replace_md_with_tag(w) end), " ")
+    t
+    |> Enum.map(&replace_md_with_tag/1)
+    |> Enum.join(" ")
   end
 
   defp replace_md_with_tag(w) do
-    replace_suffix_md(replace_prefix_md(w))
+    w |> replace_prefix_md() |> replace_suffix_md()
   end
 
   defp replace_prefix_md(w) do
@@ -75,5 +80,13 @@ defmodule Markdown do
     |> String.replace_suffix("</li>", "</li>" <> "</ul>")
   end
 
-  defp split_per_line(m), do: String.split(m, "\n")
+  defp header?(t), do: String.starts_with?(t, "#")
+
+  defp list?(t), do: String.starts_with?(t, "*")
+
+  defp split_per_line(t), do: String.split(t, "\n")
+
+  defp paragraph(t), do: "<p>#{t}</p>"
+
+  defp list_item(t), do: "<li>#{t}</li>"
 end
