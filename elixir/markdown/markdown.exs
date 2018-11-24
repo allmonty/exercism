@@ -28,8 +28,12 @@ defmodule Markdown do
   end
 
   defp parse_header_md_level(hwt) do
-    [h | t] = String.split(hwt)
-    {to_string(String.length(h)), Enum.join(t, " ")}
+    [header_mark | text] = String.split(hwt)
+
+    qty_of_hash_marks = header_mark |> String.length()
+    text = text |> Enum.join(" ")
+
+    {qty_of_hash_marks, text}
   end
 
   defp parse_list_md_level(l) do
@@ -40,8 +44,8 @@ defmodule Markdown do
     |> list_item()
   end
 
-  defp enclose_with_header_tag({hl, htl}) do
-    "<h#{hl}>" <> htl <> "</h#{hl}>"
+  defp enclose_with_header_tag({header_level, text}) do
+    "<h#{header_level}>" <> text <> "</h#{header_level}>"
   end
 
   defp enclose_with_paragraph_tag(t) do
@@ -83,6 +87,10 @@ defmodule Markdown do
   defp header?(t), do: String.starts_with?(t, "#")
 
   defp list?(t), do: String.starts_with?(t, "*")
+
+  defp bold?(t), do: t =~ ~r/#{"__"}{1}$/
+
+  defp italic?(t), do: t =~ ~r/[^#{"_"}{1}]/
 
   defp split_per_line(t), do: String.split(t, "\n")
 
