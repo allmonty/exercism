@@ -12,18 +12,18 @@ defmodule Markdown do
   """
   @spec parse(String.t()) :: String.t()
   def parse(m) do
-    patch(Enum.join(Enum.map(String.split(m, "\n"), fn t -> process(t) end)))
+    m
+    |> split_per_line()
+    |> Enum.map(&process/1)
+    |> Enum.join()
+    |> patch()
   end
 
   defp process(t) do
-    if String.starts_with?(t, "#") || String.starts_with?(t, "*") do
-      if String.starts_with?(t, "#") do
-        enclose_with_header_tag(parse_header_md_level(t))
-      else
-        parse_list_md_level(t)
-      end
-    else
-      enclose_with_paragraph_tag(String.split(t))
+    cond do
+      String.starts_with?(t, "#") -> enclose_with_header_tag(parse_header_md_level(t))
+      String.starts_with?(t, "*") -> parse_list_md_level(t)
+      true -> enclose_with_paragraph_tag(String.split(t))
     end
   end
 
@@ -70,10 +70,10 @@ defmodule Markdown do
   end
 
   defp patch(l) do
-    String.replace_suffix(
-      String.replace(l, "<li>", "<ul>" <> "<li>", global: false),
-      "</li>",
-      "</li>" <> "</ul>"
-    )
+    l
+    |> String.replace("<li>", "<ul>" <> "<li>", global: false)
+    |> String.replace_suffix("</li>", "</li>" <> "</ul>")
   end
+
+  defp split_per_line(m), do: String.split(m, "\n")
 end
