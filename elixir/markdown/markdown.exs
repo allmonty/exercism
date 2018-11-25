@@ -33,32 +33,21 @@ defmodule Markdown do
 
   defp process_list("* " <> t), do: t |> process_words() |> list_item()
 
-  defp process_words(t), do: t |> String.split() |> join_words_with_tags()
+  defp process_words(t), do: t |> join_words_with_tags()
 
   defp join_words_with_tags(t) do
     t
-    |> Enum.map(&replace_md_with_tag/1)
+    |> String.split()
+    |> Enum.map(&put_strong_or_italic_tag/1)
     |> Enum.join(" ")
   end
 
-  defp replace_md_with_tag(w) do
-    w |> replace_prefix_md() |> replace_suffix_md()
-  end
-
-  defp replace_prefix_md(w) do
-    cond do
-      w =~ ~r/^#{"__"}{1}/ -> String.replace(w, ~r/^#{"__"}{1}/, "<strong>", global: false)
-      w =~ ~r/^[#{"_"}{1}][^#{"_"}+]/ -> String.replace(w, ~r/_/, "<em>", global: false)
-      true -> w
-    end
-  end
-
-  defp replace_suffix_md(w) do
-    cond do
-      w =~ ~r/#{"__"}{1}$/ -> String.replace(w, ~r/#{"__"}{1}$/, "</strong>")
-      w =~ ~r/[^#{"_"}{1}]/ -> String.replace(w, ~r/_/, "</em>")
-      true -> w
-    end
+  defp put_strong_or_italic_tag(w) do
+    w
+    |> String.replace_prefix("__", "<strong>")
+    |> String.replace_prefix("_", "<em>")
+    |> String.replace_suffix("__", "</strong>")
+    |> String.replace_suffix("_", "</em>")
   end
 
   defp patch(l) do
