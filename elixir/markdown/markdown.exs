@@ -15,8 +15,8 @@ defmodule Markdown do
     m
     |> split_per_line()
     |> Enum.map(&process/1)
+    |> enclose_lists()
     |> Enum.join()
-    |> patch()
   end
 
   defp process(t) do
@@ -50,10 +50,24 @@ defmodule Markdown do
     |> String.replace_suffix("_", "</em>")
   end
 
-  defp patch(l) do
-    l
-    |> String.replace("<li>", "<ul><li>", global: false)
-    |> String.replace_suffix("</li>", "</li></ul>")
+  defp enclose_lists(list, processed_list \\ [], is_processing_list \\ false)
+
+  defp enclose_lists([], p, _), do: p |> Enum.reverse()
+
+  defp enclose_lists([h | t], p, false) do
+    case String.starts_with?(h, "<li>") do
+      true -> enclose_lists(t, ["<ul>#{h}" | p], true)
+      false -> enclose_lists(t, [h | p], false)
+    end
+  end
+
+  defp enclose_lists(["<li>" <> h], p, true), do: enclose_lists([], ["<li>#{h}</ul>" | p], true)
+
+  defp enclose_lists([h | t], p, true) do
+    case String.starts_with?(h, "<li>") do
+      true -> enclose_lists(t, [h | p], true)
+      false -> enclose_lists(t, ["</ul>" <> h | p], false)
+    end
   end
 
   defp header?(t), do: t =~ ~r/^#+\s/
