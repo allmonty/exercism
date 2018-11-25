@@ -19,36 +19,15 @@ defmodule Markdown do
     |> Enum.join()
   end
 
-  defp process(t) do
-    cond do
-      header?(t) -> t |> process_header()
-      list?(t) -> t |> process_list()
-      true -> t |> process_words() |> paragraph()
-    end
-  end
+  defp process("#" <> t), do: t |> process_words() |> process_header()
+  defp process("* " <> t), do: t |> process_words() |> list_item()
+  defp process(t), do: t |> process_words() |> paragraph()
 
   defp process_header(t, level \\ 1)
-  defp process_header("# " <> t, level), do: header(t, level)
+  defp process_header(" " <> t, level), do: header(t, level)
   defp process_header("#" <> t, level), do: process_header(t, level + 1)
 
-  defp process_list("* " <> t), do: t |> process_words() |> list_item()
-
-  defp process_words(t), do: t |> join_words_with_tags()
-
-  defp join_words_with_tags(t) do
-    t
-    |> String.split()
-    |> Enum.map(&put_strong_or_italic_tag/1)
-    |> Enum.join(" ")
-  end
-
-  defp put_strong_or_italic_tag(w) do
-    w
-    |> String.replace_prefix("__", "<strong>")
-    |> String.replace_prefix("_", "<em>")
-    |> String.replace_suffix("__", "</strong>")
-    |> String.replace_suffix("_", "</em>")
-  end
+  defp process_words(t), do: t |> bold() |> italic()
 
   defp enclose_lists(list, processed_list \\ [], is_processing_list \\ false)
 
@@ -70,12 +49,12 @@ defmodule Markdown do
     end
   end
 
-  defp header?(t), do: t =~ ~r/^#+\s/
-  defp list?(t), do: String.starts_with?(t, "* ")
-
   defp header(t, level), do: "<h#{level}>#{t}</h#{level}>"
   defp list_item(t), do: "<li>#{t}</li>"
   defp paragraph(t), do: "<p>#{t}</p>"
+
+  defp bold(t), do: String.replace(t, ~r/__([^_]+)__/, "<strong>\\1</strong>")
+  defp italic(t), do: String.replace(t, ~r/_([^_]+)_/, "<em>\\1</em>")
 
   defp split_per_line(t), do: String.split(t, "\n")
 end
