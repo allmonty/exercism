@@ -73,4 +73,27 @@ defmodule MarkdownTest do
 
     assert Markdown.parse(input) == expected
   end
+
+  test "two lists and the list is not in the end" do
+    input = """
+    # Header!
+    * __Bold Item__
+    * _Italic Item_
+    olá
+    tudo bom
+    * __Bold Item__
+    * _Italic Item_
+    hehe
+    """
+
+    expected =
+      "<h1>Header!</h1>" <>
+        "<ul><li><strong>Bold Item</strong></li><li><em>Italic Item</em></li></ul>" <>
+        "<p>olá</p>" <>
+        "<p>tudo bom</p>" <>
+        "<ul><li><strong>Bold Item</strong></li><li><em>Italic Item</em></li></ul>" <>
+        "<p>hehe</p>" <> "<p></p>"
+
+    assert Markdown.parse(input) == expected
+  end
 end
