@@ -18,6 +18,8 @@ defmodule BinarySearch do
   """
 
   @spec search(tuple, integer) :: {:ok, integer} | :not_found
+  def search({}, _), do: :not_found
+
   def search(numbers, key) do
   end
 end
