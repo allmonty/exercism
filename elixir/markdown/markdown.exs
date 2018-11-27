@@ -1,4 +1,6 @@
 defmodule Markdown do
+  alias Markdown.AfterProcess
+
   @doc """
     Parses a given string with Markdown syntax and returns the associated HTML for that string.
 
@@ -11,50 +13,45 @@ defmodule Markdown do
     "<h1>Header!</h1><ul><li><em>Bold Item</em></li><li><i>Italic Item</i></li></ul>"
   """
   @spec parse(String.t()) :: String.t()
-  def parse(m) do
-    m
+  def parse(markdown_text) do
+    markdown_text
     |> split_per_line()
     |> Enum.map(&process/1)
-    |> enclose_lists()
+    |> AfterProcess.enclose_lis()
     |> Enum.join()
   end
 
-  defp process("#" <> t), do: t |> process_words() |> process_header()
-  defp process("* " <> t), do: t |> process_words() |> list_item()
-  defp process(t), do: t |> process_words() |> paragraph()
+  defp process("#" <> text), do: text |> process_words() |> process_header()
+  defp process("* " <> text), do: text |> process_words() |> list_item()
+  defp process(text), do: text |> process_words() |> paragraph()
 
-  defp process_header(t, level \\ 1)
-  defp process_header(" " <> t, level), do: header(t, level)
-  defp process_header("#" <> t, level), do: process_header(t, level + 1)
+  defp process_header(text, level \\ 1)
+  defp process_header(" " <> text, level), do: header(text, level)
+  defp process_header("#" <> text, level), do: process_header(text, level + 1)
 
-  defp process_words(t), do: t |> bold() |> italic()
+  defp process_words(text), do: text |> bold() |> italic()
 
-  defp enclose_lists(list, processed_list \\ [], is_processing_list \\ false)
+  defp header(text, level), do: "<h#{level}>#{text}</h#{level}>"
+  defp list_item(text), do: "<li>#{text}</li>"
+  defp paragraph(text), do: "<p>#{text}</p>"
 
-  defp enclose_lists([], p, _), do: p |> Enum.reverse()
+  defp bold(text), do: String.replace(text, ~r/__([^_]+)__/, "<strong>\\1</strong>")
+  defp italic(text), do: String.replace(text, ~r/_([^_]+)_/, "<em>\\1</em>")
 
-  defp enclose_lists([h | t], p, false) do
-    case String.starts_with?(h, "<li>") do
-      true -> enclose_lists(t, ["<ul>#{h}" | p], true)
-      false -> enclose_lists(t, [h | p], false)
-    end
-  end
+  defp split_per_line(text), do: String.split(text, "\n")
+end
 
-  defp enclose_lists(["<li>" <> h], p, true), do: enclose_lists([], ["<li>#{h}</ul>" | p], true)
+defmodule Markdown.AfterProcess do
+  defguard li_prefix(text) when binary_part(text, 0, 4) == "<li>"
 
-  defp enclose_lists([h | t], p, true) do
-    case String.starts_with?(h, "<li>") do
-      true -> enclose_lists(t, [h | p], true)
-      false -> enclose_lists(t, ["</ul>" <> h | p], false)
-    end
-  end
+  def enclose_lis(list_of_text_lines, processed_list \\ [], is_processing_list \\ false)
 
-  defp header(t, level), do: "<h#{level}>#{t}</h#{level}>"
-  defp list_item(t), do: "<li>#{t}</li>"
-  defp paragraph(t), do: "<p>#{t}</p>"
+  def enclose_lis([], processed_list, _), do: processed_list |> Enum.reverse()
 
-  defp bold(t), do: String.replace(t, ~r/__([^_]+)__/, "<strong>\\1</strong>")
-  defp italic(t), do: String.replace(t, ~r/_([^_]+)_/, "<em>\\1</em>")
+  def enclose_lis([h], p, true) when li_prefix(h), do: enclose_lis([], ["#{h}</ul>" | p], true)
+  def enclose_lis([h | t], p, true) when li_prefix(h), do: enclose_lis(t, [h | p], true)
+  def enclose_lis([h | t], p, true), do: enclose_lis(t, ["</ul>" <> h | p], false)
 
-  defp split_per_line(t), do: String.split(t, "\n")
+  def enclose_lis([h | t], p, false) when li_prefix(h), do: enclose_lis(t, ["<ul>#{h}" | p], true)
+  def enclose_lis([h | t], p, false), do: enclose_lis(t, [h | p], false)
 end
