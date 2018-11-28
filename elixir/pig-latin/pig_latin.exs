@@ -21,15 +21,31 @@ defmodule PigLatin do
   end
 
   @vogals ["a", "e", "i", "o", "u"]
-  @vogals_sound ["x", "y"]
+  @x_y ["x", "y"]
 
-  defguard vogal_prefix(word) when binary_part(word, 0, 1) in @vogals
+  defguard vowel_prefix(word) when binary_part(word, 0, 1) in @vogals
 
-  defguard vogal_sound_prefix(word)
-           when binary_part(word, 0, 1) in @vogals_sound and
-                  binary_part(word, 1, 1) not in @vogals
+  defguard x_y_prefix(word) when binary_part(word, 0, 1) in @x_y
+  defguard second_not_vowel(word) when binary_part(word, 1, 1) not in @vogals
 
-  defp do_translate(word) when vogal_prefix(word), do: word <> "ay"
-  defp do_translate(word) when vogal_sound_prefix(word), do: word <> "ay"
-  defp do_translate(word), do: word
+  defguard vowel_like(word) when x_y_prefix(word) and second_not_vowel(word)
+
+  defguard two_letter_suffix_y(word) when byte_size(word) == 2 and binary_part(word, 1, 1) == "y"
+
+  defguard vowel_sound(w) when vowel_prefix(w) or vowel_like(w) or two_letter_suffix_y(w)
+
+  defp do_translate(word) when vowel_sound(word), do: word <> "ay"
+
+  defp do_translate(word) do
+    %{"consonants" => cons, "rest" => rest} = split_consonants_prefix(word)
+
+    case {String.last(cons) == "q", rest} do
+      {true, "u" <> rest} -> rest <> cons <> "uay"
+      _ -> rest <> cons <> "ay"
+    end
+  end
+
+  defp split_consonants_prefix(word) do
+    Regex.named_captures(~r/^(?<consonants>[^aeiou]+)(?<rest>.*)/, word)
+  end
 end
