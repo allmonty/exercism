@@ -14,27 +14,27 @@ defmodule PigLatinTest do
       assert PigLatin.translate("apple") == "appleay"
     end
 
-    @tag :pending
+    # @tag :pending
     test "word beginning with e" do
       assert PigLatin.translate("ear") == "earay"
     end
 
-    @tag :pending
+    # @tag :pending
     test "word beginning with i" do
       assert PigLatin.translate("igloo") == "iglooay"
     end
 
-    @tag :pending
+    # @tag :pending
     test "word beginning with o" do
       assert PigLatin.translate("object") == "objectay"
     end
 
-    @tag :pending
+    # @tag :pending
     test "word beginning with u" do
       assert PigLatin.translate("under") == "underay"
     end
 
-    @tag :pending
+    # @tag :pending
     test "word beginning with a vowel and followed by a qu" do
       assert PigLatin.translate("equal") == "equalay"
     end

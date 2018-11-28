@@ -15,5 +15,18 @@ defmodule PigLatin do
   """
   @spec translate(phrase :: String.t()) :: String.t()
   def translate(phrase) do
+    phrase
+    |> String.split()
+    |> Enum.map_join(" ", &do_translate/1)
   end
+
+  @vogals ["a", "e", "i", "o", "u"]
+  @vogals_sound ["xr", "yt"]
+
+  defguard vogal_prefix(word) when binary_part(word, 0, 1) in @vogals
+  defguard vogal_sound_prefix(word) when binary_part(word, 0, 2) in @vogals_sound
+
+  defp do_translate(word) when vogal_prefix(word), do: word <> "ay"
+  defp do_translate(word) when vogal_sound_prefix(word), do: word <> "ay"
+  defp do_translate(word), do: word
 end
