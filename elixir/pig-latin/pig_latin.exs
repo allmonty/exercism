@@ -23,16 +23,16 @@ defmodule PigLatin do
   @vogals ["a", "e", "i", "o", "u"]
   @x_y ["x", "y"]
 
-  defguard vowel_prefix(word) when binary_part(word, 0, 1) in @vogals
+  defguardp vowel_prefix(word) when binary_part(word, 0, 1) in @vogals
 
-  defguard x_y_prefix(word) when binary_part(word, 0, 1) in @x_y
-  defguard second_not_vowel(word) when binary_part(word, 1, 1) not in @vogals
+  defguardp x_y_prefix(word) when binary_part(word, 0, 1) in @x_y
+  defguardp second_not_vowel(word) when binary_part(word, 1, 1) not in @vogals
 
-  defguard vowel_like(word) when x_y_prefix(word) and second_not_vowel(word)
+  defguardp vowel_like(word) when x_y_prefix(word) and second_not_vowel(word)
 
-  defguard two_letter_suffix_y(word) when byte_size(word) == 2 and binary_part(word, 1, 1) == "y"
+  defguardp two_letter_suffix_y(word) when byte_size(word) == 2 and binary_part(word, 1, 1) == "y"
 
-  defguard vowel_sound(w) when vowel_prefix(w) or vowel_like(w) or two_letter_suffix_y(w)
+  defguardp vowel_sound(w) when vowel_prefix(w) or vowel_like(w) or two_letter_suffix_y(w)
 
   defp do_translate(word) when vowel_sound(word), do: word <> "ay"
 
