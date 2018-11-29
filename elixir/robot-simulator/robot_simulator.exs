@@ -27,6 +27,9 @@ defmodule RobotSimulator do
   """
   @spec simulate(robot :: any, instructions :: String.t()) :: any
   def simulate(robot, instructions) do
+    instructions
+    |> String.graphemes()
+    |> Enum.reduce(robot, &process/2)
   end
 
   @doc """
@@ -42,4 +45,25 @@ defmodule RobotSimulator do
   """
   @spec position(robot :: any) :: {integer, integer}
   def position(robot), do: robot.position
+
+  @dir_vectors %{north: {0, 1}, south: {0, -1}, east: {1, 0}, west: {-1, 0}}
+
+  defp process("L", %Robot{direction: :north} = robot), do: %Robot{robot | direction: :west}
+  defp process("L", %Robot{direction: :south} = robot), do: %Robot{robot | direction: :east}
+  defp process("L", %Robot{direction: :east} = robot), do: %Robot{robot | direction: :north}
+  defp process("L", %Robot{direction: :west} = robot), do: %Robot{robot | direction: :south}
+
+  defp process("R", %Robot{direction: :north} = robot), do: %Robot{robot | direction: :east}
+  defp process("R", %Robot{direction: :south} = robot), do: %Robot{robot | direction: :west}
+  defp process("R", %Robot{direction: :east} = robot), do: %Robot{robot | direction: :south}
+  defp process("R", %Robot{direction: :west} = robot), do: %Robot{robot | direction: :north}
+
+  defp process("A", %Robot{direction: dir, position: pos}) do
+    advance_dir = @dir_vectors[dir]
+    x = elem(pos, 0) + elem(advance_dir, 0)
+    y = elem(pos, 1) + elem(advance_dir, 1)
+    create(dir, {x, y})
+  end
+
+  defp process(_, _), do: {:error, "invalid instruction"}
 end
