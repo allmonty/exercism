@@ -59,11 +59,10 @@ defmodule RobotSimulator do
   defp process("R", %Robot{direction: :west} = robot), do: %Robot{robot | direction: :north}
 
   defp process("A", %Robot{direction: dir, position: pos}) do
-    advance_dir = @dir_vectors[dir]
-    x = elem(pos, 0) + elem(advance_dir, 0)
-    y = elem(pos, 1) + elem(advance_dir, 1)
-    create(dir, {x, y})
+    create(dir, sum_tuple(pos, @dir_vectors[dir]))
   end
 
   defp process(_, _), do: {:error, "invalid instruction"}
+
+  defp sum_tuple(a, b), do: {elem(a, 0) + elem(b, 0), elem(a, 1) + elem(b, 1)}
 end
