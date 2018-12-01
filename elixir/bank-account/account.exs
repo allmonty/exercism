@@ -21,8 +21,7 @@ defmodule BankAccount do
   Close the bank. Makes the account unavailable.
   """
   @spec close_bank(account) :: none
-  def close_bank(account) do
-  end
+  def close_bank(account), do: GenServer.cast(account, :close)
 
   @doc """
   Get the account's balance.
@@ -40,12 +39,21 @@ end
 defmodule Account do
   use GenServer
 
+  @error_msg {:error, :account_closed}
+
   @impl true
   def init(balance), do: {:ok, balance}
 
   @impl true
-  def handle_call(:get, _from, state), do: {:reply, state, state}
+  def handle_cast(:close, _), do: {:noreply, :closed}
 
   @impl true
-  def handle_call({:update, amount}, _from, state), do: {:reply, state + amount, state + amount}
+  def handle_call(:get, _, :closed), do: {:reply, @error_msg, :closed}
+  @impl true
+  def handle_call(:get, _, state), do: {:reply, state, state}
+
+  @impl true
+  def handle_call({:update, _}, _, :closed), do: {:reply, @error_msg, :closed}
+  @impl true
+  def handle_call({:update, amount}, _, state), do: {:reply, state + amount, state + amount}
 end
