@@ -34,8 +34,7 @@ defmodule BankAccount do
   Update the account's balance by adding the given amount which may be negative.
   """
   @spec update(account, integer) :: any
-  def update(account, amount) do
-  end
+  def update(account, amount), do: GenServer.call(account, {:update, amount})
 end
 
 defmodule Account do
@@ -46,4 +45,7 @@ defmodule Account do
 
   @impl true
   def handle_call(:get, _from, state), do: {:reply, state, state}
+
+  @impl true
+  def handle_call({:update, amount}, _from, state), do: {:reply, state + amount, state + amount}
 end
