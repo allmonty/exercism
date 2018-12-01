@@ -13,6 +13,8 @@ defmodule BankAccount do
   """
   @spec open_bank() :: account
   def open_bank() do
+    {:ok, pid} = GenServer.start_link(Account, 0)
+    pid
   end
 
   @doc """
@@ -26,8 +28,7 @@ defmodule BankAccount do
   Get the account's balance.
   """
   @spec balance(account) :: integer
-  def balance(account) do
-  end
+  def balance(account), do: GenServer.call(account, :get)
 
   @doc """
   Update the account's balance by adding the given amount which may be negative.
@@ -35,4 +36,14 @@ defmodule BankAccount do
   @spec update(account, integer) :: any
   def update(account, amount) do
   end
+end
+
+defmodule Account do
+  use GenServer
+
+  @impl true
+  def init(balance), do: {:ok, balance}
+
+  @impl true
+  def handle_call(:get, _from, state), do: {:reply, state, state}
 end
