@@ -11,12 +11,14 @@ defmodule Wordy do
     |> process()
   end
 
-  defp process([n]), do: n
+  def answer(_), do: raise(ArgumentError)
 
+  defp process([n]), do: n
   defp process([a, "plus", b | t]), do: process([a + b | t])
   defp process([a, "minus", b | t]), do: process([a - b | t])
   defp process([a, "multiplied", "by", b | t]), do: process([a * b | t])
   defp process([a, "divided", "by", b | t]), do: process([a / b | t])
+  defp process(_), do: raise(ArgumentError)
 
   defp convert_numbers(str) do
     try do

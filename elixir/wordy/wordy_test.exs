@@ -77,14 +77,14 @@ defmodule WordyTest do
     assert Wordy.answer("What is -12 divided by 2 divided by -3?") == 2
   end
 
-  @tag :pending
+  # @tag :pending
   test "unknown operation" do
     assert_raise ArgumentError, fn ->
       Wordy.answer("What is 52 cubed?")
     end
   end
 
-  @tag :pending
+  # @tag :pending
   test "Non math question" do
     assert_raise ArgumentError, fn ->
       Wordy.answer("Who is the President of the United States?")
