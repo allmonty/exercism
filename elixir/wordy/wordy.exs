@@ -14,6 +14,7 @@ defmodule Wordy do
   defp process([n]), do: n
 
   defp process([a, "plus", b | t]), do: process([a + b | t])
+  defp process([a, "minus", b | t]), do: process([a - b | t])
 
   defp convert_numbers(str) do
     try do

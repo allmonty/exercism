@@ -27,7 +27,7 @@ defmodule WordyTest do
     assert Wordy.answer("What is 123 plus 45678?") == 45801
   end
 
-  @tag :pending
+  # @tag :pending
   test "subtraction" do
     assert Wordy.answer("What is 4 minus -12?") == 16
   end
