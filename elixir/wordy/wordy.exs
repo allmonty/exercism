@@ -18,9 +18,12 @@ defmodule Wordy do
   defp process([a, "minus", b | t]), do: process([a - b | t])
   defp process([a, "multiplied", "by", b | t]), do: process([a * b | t])
   defp process([a, "divided", "by", b | t]), do: process([a / b | t])
+  defp process([a, "raised", "to", "the", b, "power" | t]), do: process([:math.pow(a, b) | t])
   defp process(_), do: raise(ArgumentError)
 
   defp convert_numbers(str) do
+    str = String.replace(str, ~r/(st|nd|rd|th)$/, "")
+
     try do
       String.to_integer(str)
     rescue

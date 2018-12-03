@@ -90,4 +90,19 @@ defmodule WordyTest do
       Wordy.answer("Who is the President of the United States?")
     end
   end
+
+  # @tag :pending
+  test "exponential" do
+    assert Wordy.answer("What is 2 raised to the 5th power?") == 32
+  end
+
+  # @tag :pending
+  test "multiple exponential" do
+    assert Wordy.answer("What is 2 raised to the 5th power raised to the 2th power?") == 1024
+  end
+
+  # @tag :pending
+  test "exponential and sum" do
+    assert Wordy.answer("What is 2 raised to the 5th power plus 3?") == 35
+  end
 end
