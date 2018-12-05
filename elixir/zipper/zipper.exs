@@ -64,14 +64,14 @@ defmodule Zipper do
   Get the right child of the focus node, if any.
   """
   @spec right(Z.t()) :: Z.t() | nil
-  def left(%Z{node: %BT{right: nil}}), do: nil
+  def right(%Z{node: %BT{right: nil}}), do: nil
   def right(z), do: %Z{z | stack: [:right | z.stack], node: z.node.right}
 
   @doc """
   Get the parent of the focus node, if any.
   """
   @spec up(Z.t()) :: Z.t()
-  def up(%Z{stack: []} = z), do: nil
+  def up(%Z{stack: []}), do: nil
 
   def up(%Z{stack: [_ | t]} = z) do
     new_node = t |> Enum.reverse() |> follow_stack(z.tree)
@@ -83,6 +83,9 @@ defmodule Zipper do
   """
   @spec set_value(Z.t(), any) :: Z.t()
   def set_value(z, v) do
+    new_node = %BT{z.node | value: v}
+    new_tree = z.stack |> Enum.reverse() |> update_node(z.tree, new_node)
+    %Z{z | node: new_node, tree: new_tree}
   end
 
   @doc """
@@ -90,6 +93,9 @@ defmodule Zipper do
   """
   @spec set_left(Z.t(), BT.t()) :: Z.t()
   def set_left(z, l) do
+    new_node = %BT{z.node | left: l}
+    new_tree = z.stack |> Enum.reverse() |> update_node(z.tree, new_node)
+    %Z{z | node: new_node, tree: new_tree}
   end
 
   @doc """
@@ -97,9 +103,19 @@ defmodule Zipper do
   """
   @spec set_right(Z.t(), BT.t()) :: Z.t()
   def set_right(z, r) do
+    new_node = %BT{z.node | right: r}
+    new_tree = z.stack |> Enum.reverse() |> update_node(z.tree, new_node)
+    %Z{z | node: new_node, tree: new_tree}
   end
 
   defp follow_stack(stack, tree) do
-    Enum.reduce(stack, tree, fn dir, tree -> tree[dir] end)
+    Enum.reduce(stack, tree, fn dir, tree -> Map.fetch!(tree, dir) end)
+  end
+
+  defp update_node([], _, new), do: new
+
+  defp update_node([h | t], current, new) do
+    next_node = Map.fetch!(current, h)
+    Map.put(current, h, update_node(t, next_node, new))
   end
 end
