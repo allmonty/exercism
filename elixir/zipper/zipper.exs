@@ -71,8 +71,12 @@ defmodule Zipper do
   Get the parent of the focus node, if any.
   """
   @spec up(Z.t()) :: Z.t()
-  def up(%Z{stack: []} = z), do: z
-  def up(%Z{stack: [_ | t], tree: t}), do: %Z{stack: t, tree: t}
+  def up(%Z{stack: []} = z), do: nil
+
+  def up(%Z{stack: [_ | t]} = z) do
+    new_node = t |> Enum.reverse() |> follow_stack(z.tree)
+    %Z{z | stack: t, node: new_node}
+  end
 
   @doc """
   Set the value of the focus node.
@@ -93,5 +97,9 @@ defmodule Zipper do
   """
   @spec set_right(Z.t(), BT.t()) :: Z.t()
   def set_right(z, r) do
+  end
+
+  defp follow_stack(stack, tree) do
+    Enum.reduce(stack, tree, fn dir, tree -> tree[dir] end)
   end
 end

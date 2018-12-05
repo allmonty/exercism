@@ -40,12 +40,12 @@ defmodule ZipperTest do
     assert t1() |> from_tree |> left |> right |> to_tree == t1()
   end
 
-  @tag :pending
+  # @tag :pending
   test "traversing up from top" do
     assert t1() |> from_tree |> up == nil
   end
 
-  @tag :pending
+  # @tag :pending
   test "left, right, and up" do
     assert t1() |> from_tree |> left |> up |> right |> up |> left |> right |> value == 3
   end
