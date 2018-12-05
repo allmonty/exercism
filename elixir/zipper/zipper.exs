@@ -82,40 +82,32 @@ defmodule Zipper do
   Set the value of the focus node.
   """
   @spec set_value(Z.t(), any) :: Z.t()
-  def set_value(z, v) do
-    new_node = %BT{z.node | value: v}
-    new_tree = z.stack |> Enum.reverse() |> update_node(z.tree, new_node)
-    %Z{z | node: new_node, tree: new_tree}
-  end
+  def set_value(z, v), do: update(z, %BT{z.node | value: v})
 
   @doc """
   Replace the left child tree of the focus node.
   """
   @spec set_left(Z.t(), BT.t()) :: Z.t()
-  def set_left(z, l) do
-    new_node = %BT{z.node | left: l}
-    new_tree = z.stack |> Enum.reverse() |> update_node(z.tree, new_node)
-    %Z{z | node: new_node, tree: new_tree}
-  end
+  def set_left(z, l), do: update(z, %BT{z.node | left: l})
 
   @doc """
   Replace the right child tree of the focus node.
   """
   @spec set_right(Z.t(), BT.t()) :: Z.t()
-  def set_right(z, r) do
-    new_node = %BT{z.node | right: r}
-    new_tree = z.stack |> Enum.reverse() |> update_node(z.tree, new_node)
-    %Z{z | node: new_node, tree: new_tree}
-  end
+  def set_right(z, r), do: update(z, %BT{z.node | right: r})
 
   defp follow_stack(stack, tree) do
     Enum.reduce(stack, tree, fn dir, tree -> Map.fetch!(tree, dir) end)
   end
 
+  defp update(z, new_node) do
+    new_tree = z.stack |> Enum.reverse() |> update_node(z.tree, new_node)
+    %Z{z | node: new_node, tree: new_tree}
+  end
+
   defp update_node([], _, new), do: new
 
   defp update_node([h | t], current, new) do
-    next_node = Map.fetch!(current, h)
-    Map.put(current, h, update_node(t, next_node, new))
+    Map.put(current, h, update_node(t, Map.fetch!(current, h), new))
   end
 end
