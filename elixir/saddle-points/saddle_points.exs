@@ -5,6 +5,9 @@ defmodule SaddlePoints do
   """
   @spec rows(String.t()) :: [[integer]]
   def rows(str) do
+    str
+    |> String.split("\n")
+    |> Enum.map(&split_to_integer/1)
   end
 
   @doc """
@@ -21,5 +24,11 @@ defmodule SaddlePoints do
   """
   @spec saddle_points(String.t()) :: [{integer, integer}]
   def saddle_points(str) do
+  end
+
+  defp split_to_integer(str) do
+    str
+    |> String.split()
+    |> Enum.map(&String.to_integer/1)
   end
 end

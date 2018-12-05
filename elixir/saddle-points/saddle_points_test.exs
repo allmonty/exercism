@@ -14,19 +14,19 @@ defmodule SaddlePointsTest do
     assert rows == [[1, 2], [10, 20]]
   end
 
-  @tag :pending
+  # @tag :pending
   test "extract a row" do
     rows = SaddlePoints.rows("9 7\n8 6")
     assert Enum.at(rows, 0) == [9, 7]
   end
 
-  @tag :pending
+  # @tag :pending
   test "extract other row" do
     rows = SaddlePoints.rows("9 8 7\n19 18 17")
     assert Enum.at(rows, 1) == [19, 18, 17]
   end
 
-  @tag :pending
+  # @tag :pending
   test "extract other row again" do
     rows = SaddlePoints.rows("1 4 9\n16 25 36")
     assert Enum.at(rows, 1) == [16, 25, 36]
