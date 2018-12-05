@@ -25,17 +25,17 @@ defmodule ZipperTest do
     assert t1() |> from_tree |> to_tree == t1()
   end
 
-  @tag :pending
+  # @tag :pending
   test "left, right and value" do
     assert t1() |> from_tree |> left |> right |> value == 3
   end
 
-  @tag :pending
+  # @tag :pending
   test "dead end" do
     assert t1() |> from_tree |> left |> left == nil
   end
 
-  @tag :pending
+  # @tag :pending
   test "tree from deep focus" do
     assert t1() |> from_tree |> left |> right |> to_tree == t1()
   end

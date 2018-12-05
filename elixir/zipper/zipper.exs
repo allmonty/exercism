@@ -29,47 +29,50 @@ defmodule BinTree do
 end
 
 defmodule Zipper do
+  alias BinTree, as: BT
+  alias __MODULE__, as: Z
+
+  @type t :: %Z{stack: list, node: BT.t() | nil, tree: BT.t() | nil}
+  defstruct stack: [], node: nil, tree: nil
+
   @doc """
   Get a zipper focused on the root node.
   """
   @spec from_tree(BT.t()) :: Z.t()
-  def from_tree(bt) do
-  end
+  def from_tree(bt), do: %Z{node: bt, tree: bt}
 
   @doc """
   Get the complete tree from a zipper.
   """
   @spec to_tree(Z.t()) :: BT.t()
-  def to_tree(z) do
-  end
+  def to_tree(z), do: z.tree
 
   @doc """
   Get the value of the focus node.
   """
   @spec value(Z.t()) :: any
-  def value(z) do
-  end
+  def value(z), do: z.node.value
 
   @doc """
   Get the left child of the focus node, if any.
   """
   @spec left(Z.t()) :: Z.t() | nil
-  def left(z) do
-  end
+  def left(%Z{node: %BT{left: nil}}), do: nil
+  def left(z), do: %Z{z | stack: [:left | z.stack], node: z.node.left}
 
   @doc """
   Get the right child of the focus node, if any.
   """
   @spec right(Z.t()) :: Z.t() | nil
-  def right(z) do
-  end
+  def left(%Z{node: %BT{right: nil}}), do: nil
+  def right(z), do: %Z{z | stack: [:right | z.stack], node: z.node.right}
 
   @doc """
   Get the parent of the focus node, if any.
   """
   @spec up(Z.t()) :: Z.t()
-  def up(z) do
-  end
+  def up(%Z{stack: []} = z), do: z
+  def up(%Z{stack: [_ | t], tree: t}), do: %Z{stack: t, tree: t}
 
   @doc """
   Set the value of the focus node.
