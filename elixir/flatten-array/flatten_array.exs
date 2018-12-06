@@ -17,6 +17,7 @@ defmodule FlattenArray do
 
   defp do_flat([], f), do: f
   defp do_flat([h | t], f) when is_list(h), do: do_flat(t, do_flat(h, []) ++ f)
+  defp do_flat([nil | t], f), do: do_flat(t, f)
   defp do_flat([h | t], f), do: do_flat(t, [h | f])
 
   defp reverse([], r), do: r
