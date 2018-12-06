@@ -8,7 +8,7 @@ ExUnit.configure(exclude: :pending, trace: true)
 defmodule LargestSeriesProductTest do
   use ExUnit.Case
 
-  # @tag :pending
+  @tag :pending
   test "largest product of 2" do
     assert Series.largest_product("0123456789", 2) == 72
   end
@@ -82,14 +82,14 @@ defmodule LargestSeriesProductTest do
     end
   end
 
-  @tag :pending
+  # @tag :pending
   test "raises with empty string but non-zero span size" do
     assert_raise ArgumentError, fn ->
       Series.largest_product("", 1)
     end
   end
 
-  @tag :pending
+  # @tag :pending
   test "raises with non-empty string and negative span size" do
     assert_raise ArgumentError, fn ->
       Series.largest_product("1234", -1)
