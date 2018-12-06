@@ -12,12 +12,12 @@ defmodule FlattenArrayTest do
     assert FlattenArray.flatten([1, 2, 3]) == [1, 2, 3]
   end
 
-  @tag :pending
+  # @tag :pending
   test "flattens an empty nested list" do
     assert FlattenArray.flatten([[]]) == []
   end
 
-  @tag :pending
+  # @tag :pending
   test "flattens a nested list" do
     assert FlattenArray.flatten([1, [2, [3], 4], 5, [6, [7, 8]]]) == [1, 2, 3, 4, 5, 6, 7, 8]
   end
