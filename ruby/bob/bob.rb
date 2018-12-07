@@ -1,7 +1,9 @@
 class Bob
   def self.hey(text)
-    case text
-    when /^[A-Z\s]+!*$/
+    case text.gsub(/[\s\d,]/, "")
+    when /^[A-Z]+\?+$/
+      "Calm down, I know what I'm doing!"
+    when /^[A-Z]+\!*$/
       "Whoa, chill out!"
     when /\?$/
       "Sure."
