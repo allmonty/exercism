@@ -10,19 +10,19 @@ class BobTest < Minitest::Test
   end
 
   def test_shouting
-    skip
+    # skip
     remark = "WATCH OUT!"
     assert_equal "Whoa, chill out!", Bob.hey(remark), %q{Bob hears "WATCH OUT!", and..}
   end
 
   def test_shouting_gibberish
-    skip
+    # skip
     remark = "FCECDFCAAB"
     assert_equal "Whoa, chill out!", Bob.hey(remark), %q{Bob hears "FCECDFCAAB", and..}
   end
 
   def test_asking_a_question
-    skip
+    # skip
     remark = "Does this cryogenic chamber make me look fat?"
     assert_equal "Sure.", Bob.hey(remark), %q{Bob hears "Does this cryogenic chamber make me look fat?", and..}
   end
