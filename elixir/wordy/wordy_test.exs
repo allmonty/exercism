@@ -110,4 +110,24 @@ defmodule WordyTest do
     assert Wordy.answer("What is 1.2 plus 1.3?") == 2.5
     assert Wordy.answer("What is 1,2 plus 1,3?") == 2.5
   end
+
+  test "sentence with just one word" do
+    assert_raise ArgumentError, fn ->
+      Wordy.answer("What")
+    end
+  end
+
+  test "malformed question" do
+    q1 = "What is X plus 3?"
+    q2 = "What is 3 minus X?"
+    q3 = "What is X multiplied by 3?"
+    q4 = "What is X divided by 3?"
+    q5 = "What is X raised to the 3rd power?"
+
+    assert_raise ArgumentError, fn -> Wordy.answer(q1) end
+    assert_raise ArgumentError, fn -> Wordy.answer(q2) end
+    assert_raise ArgumentError, fn -> Wordy.answer(q3) end
+    assert_raise ArgumentError, fn -> Wordy.answer(q4) end
+    assert_raise ArgumentError, fn -> Wordy.answer(q5) end
+  end
 end
