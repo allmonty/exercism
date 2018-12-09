@@ -6,7 +6,7 @@ defmodule Wordy do
   def answer(equation) do
     equation
     |> String.trim_trailing("?")
-    |> String.split(" ")
+    |> String.split()
     |> Enum.map(&convert_numbers/1)
     |> process()
   end
@@ -23,23 +23,14 @@ defmodule Wordy do
   defp convert_numbers(str) do
     str
     |> remove_ordinal()
-    |> to_interger_or_pass()
-    |> to_float_or_pass()
+    |> to_numeric()
   end
 
-  defp to_interger_or_pass(str_num) do
-    try do
-      String.to_integer(str_num)
-    rescue
-      ArgumentError -> str_num
-    end
-  end
-
-  defp to_float_or_pass(str_num) do
-    try do
-      String.to_float(str_num)
-    rescue
-      ArgumentError -> str_num
+  defp to_numeric(text) do
+    cond do
+      text =~ ~r/^-?\d+$/ -> String.to_integer(text)
+      text =~ ~r/^-?\d+[,.]\d+$/ -> String.to_float(text)
+      true -> text
     end
   end
 

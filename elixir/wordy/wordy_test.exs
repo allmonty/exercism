@@ -105,4 +105,9 @@ defmodule WordyTest do
   test "exponential and sum" do
     assert Wordy.answer("What is 2 raised to the 5th power plus 3?") == 35
   end
+
+  test "floats" do
+    assert Wordy.answer("What is 1.2 plus 1.3?") == 2.5
+    assert Wordy.answer("What is 1,2 plus 1,3?") == 2.5
+  end
 end
