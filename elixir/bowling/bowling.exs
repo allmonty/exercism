@@ -1,6 +1,18 @@
 defmodule Bowling do
   defmodule Game do
-    defstruct score: 0, frame: 0
+    defstruct current_frame: 1,
+              frames: %{
+                1 => {},
+                2 => {},
+                3 => {},
+                4 => {},
+                5 => {},
+                6 => {},
+                7 => {},
+                8 => {},
+                9 => {},
+                10 => {}
+              }
   end
 
   @doc """
@@ -17,8 +29,11 @@ defmodule Bowling do
   """
 
   @spec roll(any, integer) :: any | String.t()
-  def roll(game, roll) do
-    game
+  def roll(%Game{current_frame: current, frames: frames}, roll) do
+    case frames[current] do
+      {} -> %Game{current_frame: current, frames: %{frames | current => {roll}}}
+      {x} -> %Game{current_frame: current + 1, frames: %{frames | current => {x, roll}}}
+    end
   end
 
   @doc """
@@ -27,5 +42,10 @@ defmodule Bowling do
   """
 
   @spec score(any) :: integer | String.t()
-  def score(game), do: game.score
+  def score(game) do
+    game.frames
+    |> Enum.reduce(0, fn {_, {r1, r2}}, acc ->
+      r1 + r2 + acc
+    end)
+  end
 end
