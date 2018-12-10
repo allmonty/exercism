@@ -11,8 +11,7 @@ defmodule Bowling do
                 7 => {},
                 8 => {},
                 9 => {},
-                10 => {},
-                11 => {}
+                10 => {}
               }
   end
 
@@ -30,6 +29,13 @@ defmodule Bowling do
   """
 
   @spec roll(any, integer) :: any | String.t()
+  def roll(%Game{current_frame: 10, frames: frames}, roll) do
+    %Game{
+      current_frame: 10,
+      frames: %{frames | 10 => Tuple.append(frames[10], roll)}
+    }
+  end
+
   def roll(%Game{current_frame: current, frames: frames}, roll) do
     case frames[current] do
       {} -> %Game{current_frame: current, frames: %{frames | current => {roll}}}
@@ -52,6 +58,7 @@ defmodule Bowling do
 
   defp calculate(rolls, frame, frames)
   defp calculate({r1, r2}, f, frames) when r1 + r2 == 10, do: r1 + r2 + elem(frames[f + 1], 0)
+  defp calculate({r1, r2, r3}, _, _), do: r1 + r2 + r3
   defp calculate({r1, r2}, _, _), do: r1 + r2
   defp calculate(_, _, _), do: 0
 end

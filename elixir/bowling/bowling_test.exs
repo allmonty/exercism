@@ -59,7 +59,7 @@ defmodule BowlingTest do
     assert Bowling.score(game) == 17
   end
 
-  @tag :pending
+  # @tag :pending
   test "a strike earns ten points in a frame with a single roll" do
     game = Bowling.start()
     rolls = [10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
