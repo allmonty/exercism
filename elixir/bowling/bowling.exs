@@ -1,12 +1,14 @@
 defmodule Bowling do
+  defmodule Game do
+    defstruct score: 0, frame: 0
+  end
+
   @doc """
     Creates a new game of bowling that can be used to store the results of
     the game
   """
-
   @spec start() :: any
-  def start do
-  end
+  def start, do: %Game{}
 
   @doc """
     Records the number of pins knocked down on a single roll. Returns `any`
@@ -16,6 +18,7 @@ defmodule Bowling do
 
   @spec roll(any, integer) :: any | String.t()
   def roll(game, roll) do
+    game
   end
 
   @doc """
@@ -24,10 +27,5 @@ defmodule Bowling do
   """
 
   @spec score(any) :: integer | String.t()
-  def score(game) do
-  end
-end
-
-defmodule Game do
-  defstruct score: 0, frame: 0
+  def score(game), do: game.score
 end
