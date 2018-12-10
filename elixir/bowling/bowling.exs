@@ -44,8 +44,12 @@ defmodule Bowling do
   @spec score(any) :: integer | String.t()
   def score(game) do
     game.frames
-    |> Enum.reduce(0, fn {_, {r1, r2}}, acc ->
-      r1 + r2 + acc
+    |> Enum.reduce(0, fn {frame, rolls}, acc ->
+      calculate(rolls, frame, game.frames) + acc
     end)
   end
+
+  defp calculate(rolls, frame, frames)
+  defp calculate({r1, r2}, f, frames) when r1 + r2 == 10, do: r1 + r2 + elem(frames[f + 1], 0)
+  defp calculate({r1, r2}, _, _), do: r1 + r2
 end
