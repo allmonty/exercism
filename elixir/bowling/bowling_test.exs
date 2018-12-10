@@ -43,7 +43,7 @@ defmodule BowlingTest do
     assert Bowling.score(game) == 16
   end
 
-  @tag :pending
+  # @tag :pending
   test "consecutive spares each get a one roll bonus" do
     game = Bowling.start()
     rolls = [5, 5, 3, 7, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -51,7 +51,7 @@ defmodule BowlingTest do
     assert Bowling.score(game) == 31
   end
 
-  @tag :pending
+  # @tag :pending
   test "a spare in the last frame gets a one roll bonus that is counted once" do
     game = Bowling.start()
     rolls = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 3, 7]

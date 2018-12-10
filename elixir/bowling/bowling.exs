@@ -11,7 +11,8 @@ defmodule Bowling do
                 7 => {},
                 8 => {},
                 9 => {},
-                10 => {}
+                10 => {},
+                11 => {}
               }
   end
 
@@ -52,4 +53,5 @@ defmodule Bowling do
   defp calculate(rolls, frame, frames)
   defp calculate({r1, r2}, f, frames) when r1 + r2 == 10, do: r1 + r2 + elem(frames[f + 1], 0)
   defp calculate({r1, r2}, _, _), do: r1 + r2
+  defp calculate(_, _, _), do: 0
 end
