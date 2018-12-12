@@ -75,7 +75,7 @@ defmodule BowlingTest do
     assert Bowling.score(game) == 26
   end
 
-  @tag :pending
+  # @tag :pending
   test "consecutive strikes each get the two roll bonus" do
     game = Bowling.start()
     rolls = [10, 10, 10, 5, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
