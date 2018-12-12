@@ -1,9 +1,8 @@
 defmodule Frame do
-  defstruct r1: 0, r2: 0, r3: 0
+  defstruct r1: 0, r2: 0
 
   def update_roll(%Frame{} = frame, 1, value), do: %Frame{frame | r1: value}
   def update_roll(%Frame{} = frame, 2, value), do: %Frame{frame | r2: value}
-  def update_roll(%Frame{} = frame, _, value), do: %Frame{frame | r3: value}
 end
 
 defmodule Game do
@@ -44,9 +43,21 @@ defmodule Bowling do
 
   defp process_roll(_, :game_over, _), do: {:error, "Cannot roll after game is over"}
 
-  defp process_roll(game, %{frame: 10, roll: 3}, value) do
+  defp process_roll(game, %{frame: :bonus_2, roll: 2}, value) do
     game
-    |> Game.update_frame(10, 3, value)
+    |> Game.update_frame(11, 2, value)
+    |> Map.replace!(:current, :game_over)
+  end
+
+  defp process_roll(game, %{frame: :bonus_2, roll: 1}, value) do
+    game
+    |> Game.update_frame(11, 1, value)
+    |> Map.replace!(:current, %{frame: :bonus_2, roll: 2})
+  end
+
+  defp process_roll(game, %{frame: :bonus_1, roll: 1}, value) do
+    game
+    |> Game.update_frame(11, 1, value)
     |> Map.replace!(:current, :game_over)
   end
 
@@ -55,7 +66,7 @@ defmodule Bowling do
       game.frames[10].r1 + value == 10 ->
         game
         |> Game.update_frame(10, 2, value)
-        |> Map.replace!(:current, %{frame: 10, roll: 3})
+        |> Map.replace!(:current, %{frame: :bonus_1, roll: 1})
 
       game.frames[10].r1 + value < 10 ->
         game
@@ -65,6 +76,12 @@ defmodule Bowling do
       true ->
         {:error, "Pin count exceeds pins on the lane"}
     end
+  end
+
+  defp process_roll(game, %{frame: 10, roll: 1}, 10) do
+    game
+    |> Game.update_frame(10, 1, 10)
+    |> Map.replace!(:current, %{frame: :bonus_2, roll: 1})
   end
 
   defp process_roll(game, %{frame: 10, roll: 1}, value) do
@@ -110,7 +127,7 @@ defmodule Bowling do
 
   def score(_), do: {:error, "Score cannot be taken until the end of the game"}
 
-  defp frame_score(_, 10, %Frame{r1: r1, r2: r2, r3: r3}), do: r1 + r2 + r3
+  defp frame_score(_, 11, _), do: 0
 
   defp frame_score(game, index, %Frame{r1: 10}) do
     next_frame = game.frames[index + 1]

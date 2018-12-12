@@ -83,7 +83,7 @@ defmodule BowlingTest do
     assert Bowling.score(game) == 81
   end
 
-  @tag :pending
+  # @tag :pending
   test "a strike in the last frame gets a two roll bonus that is counted once" do
     game = Bowling.start()
     rolls = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 7, 1]
