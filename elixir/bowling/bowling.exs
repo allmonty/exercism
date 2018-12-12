@@ -129,6 +129,8 @@ defmodule Bowling do
 
   defp frame_score(_, 11, _), do: 0
 
+  defp frame_score(game, 10, %Frame{r1: 10}), do: 10 + game.frames[11].r1 + game.frames[11].r2
+
   defp frame_score(game, index, %Frame{r1: 10}) do
     next_frame = game.frames[index + 1]
 
