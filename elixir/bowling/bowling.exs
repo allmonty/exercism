@@ -44,9 +44,13 @@ defmodule Bowling do
   defp process_roll(_, :game_over, _), do: {:error, "Cannot roll after game is over"}
 
   defp process_roll(game, %{frame: :bonus_2, roll: 2}, value) do
-    game
-    |> Game.update_frame(11, 2, value)
-    |> Map.replace!(:current, :game_over)
+    if game.frames[11].r1 == 10 or game.frames[11].r1 + value <= 10 do
+      game
+      |> Game.update_frame(11, 2, value)
+      |> Map.replace!(:current, :game_over)
+    else
+      {:error, "Pin count exceeds pins on the lane"}
+    end
   end
 
   defp process_roll(game, %{frame: :bonus_2, roll: 1}, value) do
