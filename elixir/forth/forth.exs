@@ -14,7 +14,8 @@ defmodule Forth do
   """
   @spec eval(evaluator, String.t()) :: evaluator
   def eval(ev, s) do
-    ev
+    s
+    |> separate()
   end
 
   @doc """
@@ -23,7 +24,11 @@ defmodule Forth do
   """
   @spec format_stack(evaluator) :: String.t()
   def format_stack(ev) do
-    Enum.join(ev)
+    ev |> Enum.join(" ")
+  end
+
+  defp separate(s) do
+    s |> String.split(~r/\s/)
   end
 
   defmodule StackUnderflow do
