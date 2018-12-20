@@ -15,6 +15,7 @@ defmodule Forth do
   @spec eval(evaluator, String.t()) :: evaluator
   def eval(ev, s) do
     s
+    |> String.downcase()
     |> separate()
     |> map_integers()
     |> calculate([])
@@ -45,10 +46,12 @@ defmodule Forth do
 
   defp calculate([], values), do: values
 
+  defp calculate(["dup" | _], []), do: raise(Forth.StackUnderflow)
+  defp calculate(["dup" | t], [e | vals]), do: calculate(t, [e, e | vals])
   defp calculate(["+" | t], vals), do: calculate(t, plus(vals))
   defp calculate(["-" | t], vals), do: calculate(t, sub(vals))
   defp calculate(["*" | t], vals), do: calculate(t, mult(vals))
-  defp calculate(["/" | _], [val]), do: raise(Forth.DivisionByZero)
+  defp calculate(["/" | _], [_]), do: raise(Forth.DivisionByZero)
   defp calculate(["/" | t], vals), do: calculate(t, div(vals))
   defp calculate([h | t], vals), do: calculate(t, [h | vals])
 
