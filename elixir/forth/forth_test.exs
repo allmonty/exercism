@@ -101,7 +101,7 @@ defmodule ForthTest do
     end
   end
 
-  @tag :pending
+  # @tag :pending
   test "swap" do
     s =
       Forth.new()
