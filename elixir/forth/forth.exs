@@ -28,7 +28,7 @@ defmodule Forth do
   end
 
   defp separate(s) do
-    s |> String.split(~r/\s/)
+    s |> String.split(~r/[^a-zA-Z\d]+/)
   end
 
   defmodule StackUnderflow do
