@@ -48,11 +48,19 @@ defmodule Forth do
 
   defp calculate(["dup" | _], []), do: raise(Forth.StackUnderflow)
   defp calculate(["dup" | t], [e | vals]), do: calculate(t, [e, e | vals])
+
+  defp calculate(["drop" | _], []), do: raise(Forth.StackUnderflow)
+  defp calculate(["drop" | t], [_ | vals]), do: calculate(t, vals)
+
   defp calculate(["+" | t], vals), do: calculate(t, plus(vals))
+
   defp calculate(["-" | t], vals), do: calculate(t, sub(vals))
+
   defp calculate(["*" | t], vals), do: calculate(t, mult(vals))
+
   defp calculate(["/" | _], [_]), do: raise(Forth.DivisionByZero)
   defp calculate(["/" | t], vals), do: calculate(t, div(vals))
+
   defp calculate([h | t], vals), do: calculate(t, [h | vals])
 
   defp plus(vals), do: vals |> Enum.reduce(&(&2 + &1)) |> List.wrap()
