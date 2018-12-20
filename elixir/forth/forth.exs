@@ -55,6 +55,9 @@ defmodule Forth do
   defp calculate(["swap" | _], vals) when length(vals) < 2, do: raise(Forth.StackUnderflow)
   defp calculate(["swap" | t], [a, b | vals]), do: calculate(t, [b, a | vals])
 
+  defp calculate(["over" | _], vals) when length(vals) < 2, do: raise(Forth.StackUnderflow)
+  defp calculate(["over" | t], [a, b | vals]), do: calculate(t, [b, a, b | vals])
+
   defp calculate(["+" | t], vals), do: calculate(t, plus(vals))
 
   defp calculate(["-" | t], vals), do: calculate(t, sub(vals))
