@@ -53,6 +53,9 @@ defmodule Forth do
 
   defp do_parse(rules, [h | t], p) when is_number(h), do: do_parse(rules, t, [h | p])
 
+  defp do_parse(_, [":", rule_name | _], _) when is_number(rule_name),
+    do: raise(Forth.InvalidWord)
+
   defp do_parse(rules, [":", rule_name | t], p) do
     {new_rules, [";" | vals]} = Enum.split_while(t, &(&1 != ";"))
     rules = Map.put(rules, rule_name, new_rules)
@@ -66,7 +69,7 @@ defmodule Forth do
     end
   end
 
-  defp separate(s), do: s |> String.split(~r/[^a-zA-Z\d\-\+\/\*:;]+/)
+  defp separate(s), do: s |> String.split(~r/[\x00-\x20\n\r\t\ ]+/)
 
   defp calculate([], values), do: values
 
