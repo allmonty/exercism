@@ -43,9 +43,9 @@ defmodule Forth do
   being the rightmost element in the string.
   """
   @spec format_stack(evaluator) :: String.t()
-  def format_stack(ev) do
-    ev.vals |> Enum.reverse() |> Enum.join(" ")
-  end
+  def format_stack(ev), do: ev.vals |> Enum.reverse() |> Enum.join(" ")
+
+  # ============= ============= ============= #
 
   defp parse(vals, rules), do: do_parse(rules, vals, [])
 
@@ -58,8 +58,10 @@ defmodule Forth do
 
   defp do_parse(rules, [":", rule_name | t], p) do
     {new_rules, [";" | vals]} = Enum.split_while(t, &(&1 != ";"))
-    rules = Map.put(rules, rule_name, new_rules)
-    do_parse(rules, vals, p)
+
+    rules
+    |> Map.put(rule_name, new_rules)
+    |> do_parse(vals, p)
   end
 
   defp do_parse(rules, [h | t], p) do
