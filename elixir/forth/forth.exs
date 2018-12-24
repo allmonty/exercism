@@ -1,12 +1,12 @@
 defmodule Forth do
-  @opaque evaluator :: any
+  @type evaluator :: any
 
   @doc """
   Create a new evaluator.
   """
   @spec new() :: evaluator
   def new() do
-    []
+    %{rules: [], vals: []}
   end
 
   @doc """
@@ -14,12 +14,14 @@ defmodule Forth do
   """
   @spec eval(evaluator, String.t()) :: evaluator
   def eval(ev, s) do
-    s
-    |> String.downcase()
-    |> separate()
-    |> map_integers()
-    |> calculate([])
-    |> Enum.reverse()
+    vals =
+      s
+      |> String.downcase()
+      |> separate()
+      |> map_integers()
+      |> calculate([])
+
+    %{ev | vals: vals ++ ev.vals}
   end
 
   @doc """
@@ -28,21 +30,10 @@ defmodule Forth do
   """
   @spec format_stack(evaluator) :: String.t()
   def format_stack(ev) do
-    ev |> Enum.join(" ")
+    ev.vals |> Enum.reverse() |> Enum.join(" ")
   end
 
-  defp separate(s) do
-    s |> String.split(~r/[^a-zA-Z\d\-\+\/\*]+/)
-  end
-
-  defp map_integers(s) do
-    Enum.map(s, fn x ->
-      cond do
-        x =~ ~r/^-?\d+$/ -> String.to_integer(x)
-        true -> x
-      end
-    end)
-  end
+  defp separate(s), do: s |> String.split(~r/[^a-zA-Z\d\-\+\/\*]+/)
 
   defp calculate([], values), do: values
 
@@ -67,12 +58,23 @@ defmodule Forth do
   defp calculate(["/" | _], [_]), do: raise(Forth.DivisionByZero)
   defp calculate(["/" | t], vals), do: calculate(t, div(vals))
 
-  defp calculate([h | t], vals), do: calculate(t, [h | vals])
+  defp calculate([h | t], vals) when is_number(h), do: calculate(t, [h | vals])
+
+  defp calculate(_, _), do: raise(Forth.UnknownWord)
 
   defp plus(vals), do: vals |> Enum.reduce(&(&2 + &1)) |> List.wrap()
   defp sub(vals), do: vals |> Enum.reduce(&(&1 - &2)) |> List.wrap()
   defp mult(vals), do: vals |> Enum.reduce(&(&2 * &1)) |> List.wrap()
   defp div(vals), do: [Enum.reduce(vals, 1, fn x, acc -> Integer.floor_div(x, acc) end)]
+
+  defp map_integers(s) do
+    Enum.map(s, fn x ->
+      cond do
+        x =~ ~r/^-?\d+$/ -> String.to_integer(x)
+        true -> x
+      end
+    end)
+  end
 
   defmodule StackUnderflow do
     defexception []
