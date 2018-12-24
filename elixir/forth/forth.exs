@@ -6,22 +6,36 @@ defmodule Forth do
   """
   @spec new() :: evaluator
   def new() do
-    %{rules: [], vals: []}
+    %{
+      rules: %{
+        "dup" => ["dup"],
+        "drop" => ["drop"],
+        "swap" => ["swap"],
+        "over" => ["over"],
+        "+" => ["+"],
+        "-" => ["-"],
+        "*" => ["*"],
+        "/" => ["/"]
+      },
+      vals: []
+    }
   end
 
   @doc """
   Evaluate an input string, updating the evaluator state.
   """
   @spec eval(evaluator, String.t()) :: evaluator
-  def eval(ev, s) do
-    vals =
+  def eval(%{rules: rules} = ev, s) do
+    {rules, vals} =
       s
       |> String.downcase()
       |> separate()
       |> map_integers()
-      |> calculate([])
+      |> parse(rules)
 
-    %{ev | vals: vals ++ ev.vals}
+    vals = calculate(vals, [])
+
+    %{ev | vals: vals ++ ev.vals, rules: rules}
   end
 
   @doc """
@@ -33,7 +47,26 @@ defmodule Forth do
     ev.vals |> Enum.reverse() |> Enum.join(" ")
   end
 
-  defp separate(s), do: s |> String.split(~r/[^a-zA-Z\d\-\+\/\*]+/)
+  defp parse(vals, rules), do: do_parse(rules, vals, [])
+
+  defp do_parse(rules, [], parsed), do: {rules, parsed |> Enum.reverse()}
+
+  defp do_parse(rules, [h | t], p) when is_number(h), do: do_parse(rules, t, [h | p])
+
+  defp do_parse(rules, [":", rule_name | t], p) do
+    {new_rules, [";" | vals]} = Enum.split_while(t, &(&1 != ";"))
+    rules = Map.put(rules, rule_name, new_rules)
+    do_parse(rules, vals, p)
+  end
+
+  defp do_parse(rules, [h | t], p) do
+    case rules[h] do
+      nil -> raise(Forth.UnknownWord, word: h)
+      parsed -> do_parse(rules, t, parsed ++ p)
+    end
+  end
+
+  defp separate(s), do: s |> String.split(~r/[^a-zA-Z\d\-\+\/\*:;]+/)
 
   defp calculate([], values), do: values
 
@@ -60,7 +93,7 @@ defmodule Forth do
 
   defp calculate([h | t], vals) when is_number(h), do: calculate(t, [h | vals])
 
-  defp calculate(_, _), do: raise(Forth.UnknownWord)
+  defp calculate([h | _], _), do: raise(Forth.UnknownWord, word: h)
 
   defp plus(vals), do: vals |> Enum.reduce(&(&2 + &1)) |> List.wrap()
   defp sub(vals), do: vals |> Enum.reduce(&(&1 - &2)) |> List.wrap()
