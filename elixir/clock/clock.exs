@@ -21,3 +21,7 @@ defmodule Clock do
   def add(%Clock{hour: hour, minute: minute}, add_minute) do
   end
 end
+
+defimpl String.Chars, for: Clock do
+  def to_string(clock), do: "#{clock.hour}:#{clock.minute}"
+end
