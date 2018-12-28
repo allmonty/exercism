@@ -25,6 +25,12 @@ defmodule Clock do
   """
   @spec add(Clock, integer) :: Clock
   def add(%Clock{hour: hour, minute: minute}, add_minute) do
+    total_minutes = hour * 60 + minute + add_minute
+
+    %Clock{
+      hour: total_minutes |> Integer.floor_div(60) |> Integer.mod(24),
+      minute: total_minutes |> Integer.mod(60)
+    }
   end
 
   # ------------- ------------- ------------- #
