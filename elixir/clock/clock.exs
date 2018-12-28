@@ -10,11 +10,7 @@ defmodule Clock do
   @spec new(integer, integer) :: Clock
   def new(hour, minute) do
     total_minutes = hour * 60 + minute
-
-    %Clock{
-      hour: total_minutes |> Integer.floor_div(60) |> Integer.mod(24),
-      minute: total_minutes |> Integer.mod(60)
-    }
+    create(total_minutes)
   end
 
   @doc """
@@ -26,14 +22,20 @@ defmodule Clock do
   @spec add(Clock, integer) :: Clock
   def add(%Clock{hour: hour, minute: minute}, add_minute) do
     total_minutes = hour * 60 + minute + add_minute
-
-    %Clock{
-      hour: total_minutes |> Integer.floor_div(60) |> Integer.mod(24),
-      minute: total_minutes |> Integer.mod(60)
-    }
+    create(total_minutes)
   end
 
   # ------------- ------------- ------------- #
+
+  defp minutes_to_hours(min), do: min |> Integer.floor_div(60) |> Integer.mod(24)
+  defp limit_min_to_60(min), do: min |> Integer.mod(60)
+
+  defp create(total_minutes) do
+    %Clock{
+      hour: total_minutes |> minutes_to_hours(),
+      minute: total_minutes |> limit_min_to_60()
+    }
+  end
 end
 
 defimpl String.Chars, for: Clock do
