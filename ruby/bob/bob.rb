@@ -1,13 +1,24 @@
 class Bob
+  
+  def self.clean_text(text) text.gsub(/[^a-zA-Z?!\d]/, "") end
+  
+  def self.question?(text) text =~ /\?+$/ end
+    
+  def self.yelling?(text)
+    text = text.gsub(/[\d,? ]/, "")
+    text =~ /^[A-Z]+[!]*$/
+  end
+
   def self.hey(text)
-    case text.gsub(/[^a-bA-Z?!.,]/, "")
-    when ""
+    text = clean_text(text)
+
+    if text == ""
       "Fine. Be that way!"
-    when /^[A-Z]+\?+$/
+    elsif yelling?(text) && question?(text)
       "Calm down, I know what I'm doing!"
-    when /^[A-Z]+\!*$/
+    elsif yelling?(text)
       "Whoa, chill out!"
-    when /\?$/
+    elsif question?(text)
       "Sure."
     else
       "Whatever."

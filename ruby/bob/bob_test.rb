@@ -82,7 +82,7 @@ class BobTest < Minitest::Test
   end
 
   def test_shouting_with_no_exclamation_mark
-    skip
+    # skip
     remark = "I HATE THE DMV"
     assert_equal "Whoa, chill out!", Bob.hey(remark), %q{Bob hears "I HATE THE DMV", and..}
   end
