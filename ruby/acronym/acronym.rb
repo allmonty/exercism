@@ -2,7 +2,7 @@ class Acronym
   def self.abbreviate(text)
     text.
     upcase().
-    scan(/(.)\w*\W*/).
+    scan(/\b\w/).
     join()
   end
 end
