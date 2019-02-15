@@ -67,21 +67,21 @@ class HighScoresTest < Minitest::Test
   end
 
   def test_message_for_new_personal_best
-    skip
+    # skip
     scores = [20, 40, 0, 30, 70]
     expected = "Your latest score was 70. That's your personal best!"
     assert_equal expected, HighScores.new(scores).report
   end
 
   def test_message_when_latest_score_is_not_the_highest_score
-    skip
+    # skip
     scores = [20, 100, 0, 30, 70]
     expected = "Your latest score was 70. That's 30 short of your personal best!"
     assert_equal expected, HighScores.new(scores).report
   end
 
   def test_message_for_repeated_personal_best
-    skip
+    # skip
     scores = [20, 70, 50, 70, 30]
     expected = "Your latest score was 30. That's 40 short of your personal best!"
     assert_equal expected, HighScores.new(scores).report

@@ -19,4 +19,16 @@ class HighScores
     reverse().
     slice(0..2)
   end
+
+  def report()
+    latest = latest()
+    personal_best = personal_best()
+    report_txt = "Your latest score was #{latest}."
+    if personal_best > latest
+      difference = personal_best - latest
+      report_txt + " That's #{difference} short of your personal best!"
+    else
+      report_txt + " That's your personal best!"
+    end
+  end
 end
