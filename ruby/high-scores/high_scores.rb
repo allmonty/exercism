@@ -12,4 +12,11 @@ class HighScores
   def personal_best()
     @scores.max
   end
+
+  def personal_top()
+    @scores.
+    sort().
+    reverse().
+    slice(0..2)
+  end
 end
