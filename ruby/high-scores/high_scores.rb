@@ -4,4 +4,8 @@ class HighScores
   def initialize(scores)
     @scores = scores
   end
+
+  def latest()
+    @scores.last
+  end
 end
