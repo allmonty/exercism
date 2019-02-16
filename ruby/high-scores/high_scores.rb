@@ -21,11 +21,19 @@ class HighScores
   end
 
   def report
-    latest = latest()
-    personal_best = personal_best()
-    report_txt = "Your latest score was #{latest}."
-    if personal_best > latest
-      difference = personal_best - latest
+    create_report_text(
+      latest(),
+      personal_best()
+    )
+  end
+
+  private
+
+  def create_report_text(latest_score, best_score)
+    report_txt = "Your latest score was #{latest_score}."
+
+    if best_score > latest_score
+      difference = best_score - latest_score
       report_txt + " That's #{difference} short of your personal best!"
     else
       report_txt + " That's your personal best!"
