@@ -14,10 +14,7 @@ class HighScores
   end
 
   def personal_top
-    @scores.
-    sort().
-    reverse().
-    slice(0..2)
+    @scores.max(3)
   end
 
   def report
