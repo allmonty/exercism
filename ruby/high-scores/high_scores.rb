@@ -5,22 +5,22 @@ class HighScores
     @scores = scores
   end
 
-  def latest()
+  def latest
     @scores.last
   end
 
-  def personal_best()
+  def personal_best
     @scores.max
   end
 
-  def personal_top()
+  def personal_top
     @scores.
     sort().
     reverse().
     slice(0..2)
   end
 
-  def report()
+  def report
     latest = latest()
     personal_best = personal_best()
     report_txt = "Your latest score was #{latest}."
