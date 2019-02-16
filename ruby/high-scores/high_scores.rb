@@ -1,5 +1,5 @@
 class HighScores
-  attr_accessor :scores
+  attr_reader :scores
 
   def initialize(scores)
     @scores = scores
